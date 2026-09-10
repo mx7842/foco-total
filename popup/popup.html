@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Foco Total</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="../icons/icon48.png" alt="" class="logo" />
+    <div class="header-text">
+      <h1>Foco Total</h1>
+      <p class="subtitle">Oculte distrações das redes sociais</p>
+    </div>
+    <button id="settings-btn" class="icon-btn" type="button" aria-label="Abrir configurações" aria-expanded="false">⚙</button>
+  </header>
+
+  <section id="settings-panel" class="settings card" hidden>
+    <h2 class="settings-title">Configurações</h2>
+    <button id="export-btn" class="settings-btn" type="button">Exportar configurações</button>
+    <button id="import-btn" class="settings-btn" type="button">Importar configurações</button>
+    <input id="import-file" type="file" accept="application/json,.json" hidden />
+    <p id="settings-message" class="settings-message" role="status" hidden></p>
+  </section>
+
+  <div id="import-confirm" class="confirm" hidden>
+    <p>A importação substituirá todas as configurações atuais. Continuar?</p>
+    <div class="confirm-actions">
+      <button id="import-yes" class="btn-danger" type="button">Importar</button>
+      <button id="import-no" class="btn-ghost" type="button">Cancelar</button>
+    </div>
+  </div>
+
+  <section class="card master-card">
+    <label class="row" for="master-toggle">
+      <span class="row-label">Extensão ativada</span>
+      <button id="master-toggle" class="toggle" role="switch" aria-checked="true"
+        aria-label="Extensão ativada"></button>
+    </label>
+  </section>
+
+  <button id="reset-btn" class="reset-btn">
+    <span aria-hidden="true">⟳</span> Restaurar configurações
+  </button>
+
+  <div id="reset-confirm" class="confirm" hidden>
+    <p>Desligar todas as regras e voltar ao estado inicial?</p>
+    <div class="confirm-actions">
+      <button id="reset-yes" class="btn-danger">Restaurar</button>
+      <button id="reset-no" class="btn-ghost">Cancelar</button>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="Redes sociais">
+    <button class="tab" role="tab" id="tab-x" aria-controls="panel-x" aria-selected="true">X</button>
+    <button class="tab" role="tab" id="tab-instagram" aria-controls="panel-instagram" aria-selected="false">Instagram</button>
+    <button class="tab" role="tab" id="tab-tiktok" aria-controls="panel-tiktok" aria-selected="false">TikTok</button>
+    <button class="tab" role="tab" id="tab-youtube" aria-controls="panel-youtube" aria-selected="false">YouTube</button>
+  </nav>
+
+  <main id="panels">
+    <div id="panel-x" role="tabpanel" aria-labelledby="tab-x"></div>
+    <div id="panel-instagram" role="tabpanel" aria-labelledby="tab-instagram" hidden></div>
+    <div id="panel-tiktok" role="tabpanel" aria-labelledby="tab-tiktok" hidden></div>
+    <div id="panel-youtube" role="tabpanel" aria-labelledby="tab-youtube" hidden></div>
+  </main>
+
+  <footer class="footer">
+    <span id="hidden-count">0 itens ocultos</span>
+    <span class="version">v1.0.0</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

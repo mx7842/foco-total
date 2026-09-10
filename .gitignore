@@ -1,0 +1,7 @@
+# Material de referência de terceiros, não faz parte da extensão publicada.
+/yt/
+
+# Arquivos locais do sistema/editor.
+.DS_Store
+Thumbs.db
+
