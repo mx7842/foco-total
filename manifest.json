@@ -1,15 +1,17 @@
 {
   "manifest_version": 3,
   "name": "Foco Total",
-  "version": "1.0.0",
-  "description": "Oculte distrações das redes sociais: X, Instagram, TikTok e YouTube.",
+  "version": "1.0.1",
+  "description": "Oculte distrações das redes sociais: X, Instagram, TikTok, YouTube e Facebook.",
   "permissions": ["storage"],
   "host_permissions": [
     "https://x.com/*",
     "https://twitter.com/*",
     "https://www.instagram.com/*",
     "https://www.tiktok.com/*",
-    "https://www.youtube.com/*"
+    "https://www.youtube.com/*",
+    "https://facebook.com/*",
+    "https://www.facebook.com/*"
   ],
   "icons": {
     "16": "icons/icon16.png",
@@ -45,6 +47,11 @@
     {
       "matches": ["https://www.youtube.com/*"],
       "js": ["content/engine.js", "content/youtube.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://facebook.com/*", "https://www.facebook.com/*"],
+      "js": ["content/engine.js", "content/facebook.js"],
       "run_at": "document_start"
     }
   ]

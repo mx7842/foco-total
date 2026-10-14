@@ -23,6 +23,21 @@ ver [CLAUDE.md](CLAUDE.md). Para a especificação original, ver o PRD em
   quebrava após reload (X passou a renderizar os artigos fora do
   `news_sidebar`). Ponte removida do build final.
 - Build inicial entregue: `foco-total-v1.0.0.zip`.
+- Versão atual distribuível: `foco-total-v1.0.1.zip`.
+
+## Atualização 2026-10-14 — publicação 1.0.1
+
+- O Facebook passou a ser uma plataforma suportada no manifesto, com regras
+  em `content/facebook.js` e controles no popup.
+- A cobertura inclui barra de postagem, feed Para você/Foryou com bloqueio de
+  rolagem, stories, sugestões de grupos, placeholders, patrocinados, ações da
+  conta, ícones superiores, busca, rodapé, botão flutuante e menu lateral
+  individual ou completo.
+- A home atual usa `div[role="main"]` e controles `div[role="button"]`; as
+  regras foram ajustadas para esses landmarks sem depender das classes
+  ofuscadas do Facebook.
+- A versão 1.0.1 foi validada ao vivo no Chrome e publicada com imagens
+  públicas da interface no README.
 
 **2026-07-13 — Correções e expansão via feedback do usuário**
 
@@ -179,9 +194,13 @@ ver [CLAUDE.md](CLAUDE.md). Para a especificação original, ver o PRD em
 - **YouTube**: 45 controles em 13 grupos, incluindo Shorts de pesquisa/aba
   de canal, importação/exportação local no popup e cobertura das telas finais
   clássica e moderna.
+- **Facebook**: controles para barra de postagem, feed/Foryou com bloqueio de
+  rolagem, stories, sugestões de grupos, skeletons do feed, patrocinados,
+  ações da conta, cinco ícones superiores, menu lateral inteiro ou 15 itens
+  individuais, busca e botão flutuante.
 - Todas as regras novas ou corrigidas foram validadas ao vivo via Codex no
   Chrome; regras históricas mantêm o registro original no checklist.
-- `docs/CHECKLIST_TESTES.md` tem 16 rodadas registradas cronologicamente —
+- `docs/CHECKLIST_TESTES.md` tem 21 rodadas registradas cronologicamente —
   é o log de QA mais confiável para saber o que já foi testado e quando.
 
 ## Decisões de design que não são óbvias pelo código

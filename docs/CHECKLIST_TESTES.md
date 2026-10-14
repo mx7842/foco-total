@@ -330,3 +330,77 @@ Feedback do usuário: os cards continuavam visíveis em uma tela final moderna.
   toggle no topo do popup foram preservados.
 - ⏳ Smoke manual após recarregar a extensão: encerrar o vídeo e alternar
   “Ocultar cards de recomendação no fim do vídeo”.
+
+## Rodada 17 — Facebook: primeira implementação (2026-10-13)
+
+Pedido do usuário: ocultar barra de postagem, feed inteiro, rodapé (imagem 2),
+ações da conta (imagem 3), cada ícone da navegação superior (imagem 4),
+stories e patrocinados da lateral/feed.
+
+- ✅ Inspeção autenticada ao vivo: confirmados os landmarks `main`, regiões
+  `Criar um post`/`Stories`, navegações `Facebook`/`Atalhos`/`Configurações e
+  controles da conta`, `#right_rail_container` e as rotas dos cinco ícones.
+- ✅ Popup: nova aba Facebook com 11 controles, renderização lazy, detecção
+  automática por hostname e inclusão no backup local.
+- ✅ Manifest: host permissions e content script para `facebook.com` e
+  `www.facebook.com`.
+- ✅ Inspeção ao vivo confirmou também os botões de ações dos posts e os menus
+  específicos de conteúdo patrocinado.
+- ⏳ Validar o efeito visual após recarga da extensão: cada toggle individual,
+  feed dinâmico após scroll, stories, rodapé, barra de ações, cinco ícones e
+  patrocinados lateral/feed.
+- ✅ Revisão estática confirmou que `feedInteiro` e `patrocinados` rejeitam
+  `main` e respeitam limites dimensionais antes de marcar um post.
+
+## Rodada 18 — Facebook: correções de stories e novos controles (2026-10-13)
+
+Pedido do usuário: corrigir stories e barra de postagem; ocultar sugestões de
+grupos, placeholders brancos, feed/Foryou com bloqueio de rolagem, itens
+individuais do menu lateral, busca e botão flutuante.
+
+- ✅ Mantidas as chaves existentes `barraPostagem`, `stories`, `feedInteiro` e
+  `patrocinados` para preservar configurações salvas.
+- ✅ Adicionados ao popup: sugestões de grupos, carregamento do feed, busca,
+  botão flutuante e 15 itens individuais do menu esquerdo.
+- ✅ `feedInteiro` recebeu bloqueio condicional de rolagem da home via
+  `extraCss`; a regra não trava rotas fora da home.
+- ✅ Guardas estruturais limitam stories, grupos, placeholders, menu e botão
+  flutuante; nenhuma heurística pode marcar `main`, `body` ou `html`.
+- ✅ Validado ao vivo após recarga da extensão: stories, composer, grupos,
+  skeletons, bloqueio de scroll, 15 atalhos, busca e botão flutuante.
+- ℹ️ A sessão autenticada confirmou os landmarks e rótulos atuais; o reload da
+  extensão em `chrome://extensions` precisa ser feito manualmente porque essa
+  URL é bloqueada pelo controle automatizado do navegador.
+
+## Rodada 19 — Facebook: reforço semântico da bandeja (2026-10-13)
+
+- ✅ A inspeção autenticada confirmou a bandeja como tabela acessível com o
+  rótulo `bandeja de stories`; a regra agora usa esse sinal como caminho
+  estático e mantém a heurística delimitada como fallback.
+- ✅ O compositor também aceita o contêiner com `aria-label="Criar um post"`
+  mesmo quando o Facebook não atribui `role="region"`, e lê os rótulos
+  acessíveis dos botões de vídeo/foto quando não há texto DOM.
+- ✅ Efeito visual da versão anterior foi reproduzido e corrigido na Rodada 20.
+
+## Rodada 20 — Facebook: compositor, rolagem e botão flutuante (2026-10-13)
+
+- ✅ A inspeção ao vivo confirmou que a home usa `div[role="main"]`, não uma
+  tag `<main>`; compositor, marcador de home e bloqueio de rolagem passaram a
+  aceitar ambos os landmarks.
+- ✅ O compositor agora aceita `[role="button"]` para o campo “No que você
+  está pensando”; o Facebook renderiza esses controles como `div` semântico.
+- ✅ O botão “Nova mensagem” no canto inferior direito passa a ser ocultado
+  pela semântica + geometria mesmo quando o próprio elemento não informa
+  `position: fixed`.
+- ✅ Adicionada a opção `menuTodos` para ocultar a navegação lateral inteira.
+- ✅ Validado ao vivo na versão 1.0.1: compositor e botão flutuante ocultos,
+  `html` e `body` com rolagem bloqueada, feed/skeletons/stories/patrocinados/
+  rodapé/menu superior e busca sem elementos visíveis; sugestões de grupos
+  ausentes.
+
+## Rodada 21 — Facebook: validação final da versão 1.0.1 (2026-10-13)
+
+- ✅ O popup e o pacote foram identificados como `v1.0.1`.
+- ✅ A aba autenticada do Chrome confirmou o estado visual final dos controles
+  solicitados; o menu lateral “Ver mais” permanece disponível porque a nova
+  opção `menuTodos` é independente e pode ser ligada pelo usuário.

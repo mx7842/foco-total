@@ -224,27 +224,100 @@ const CATALOG = {
       ],
     },
   ],
+  facebook: [
+    {
+      title: "Feed e publicação",
+      items: [
+        { key: "barraPostagem", label: "Ocultar barra de postagem" },
+        { key: "feedInteiro", label: "Ocultar feed Para você / Foryou e travar rolagem" },
+        { key: "stories", label: "Ocultar stories" },
+        { key: "sugestoesGrupos", label: "Ocultar sugestões de grupos" },
+        { key: "carregamentoFeed", label: "Ocultar elementos de carregamento" },
+      ],
+    },
+    {
+      title: "Publicidade",
+      items: [
+        { key: "patrocinados", label: "Ocultar patrocinados (lateral e feed)" },
+      ],
+    },
+    {
+      title: "Ações da conta (imagem 3)",
+      items: [{ key: "acoesConta", label: "Ocultar barra de ações da conta" }],
+    },
+    {
+      title: "Navegação superior (imagem 4)",
+      items: [
+        { key: "navHome", label: "Ocultar ícone Página inicial" },
+        { key: "navReels", label: "Ocultar ícone Reels" },
+        { key: "navAmigos", label: "Ocultar ícone Amigos" },
+        { key: "navGrupos", label: "Ocultar ícone Grupos" },
+        { key: "navJogos", label: "Ocultar ícone Jogos" },
+      ],
+    },
+    {
+      title: "Menu lateral esquerdo",
+      items: [
+        { key: "menuTodos", label: "Ocultar todos os itens do menu lateral" },
+        { key: "menuPerfil", label: "Ocultar Perfil" },
+        { key: "menuMetaAi", label: "Ocultar Meta AI" },
+        { key: "menuAmigos", label: "Ocultar Amigos" },
+        { key: "menuLembrancas", label: "Ocultar Lembranças" },
+        { key: "menuSalvos", label: "Ocultar Salvos" },
+        { key: "menuGrupos", label: "Ocultar Grupos" },
+        { key: "menuReels", label: "Ocultar Reels" },
+        { key: "menuMarketplace", label: "Ocultar Marketplace" },
+        { key: "menuFeeds", label: "Ocultar Feeds" },
+        { key: "menuEventos", label: "Ocultar Eventos" },
+        { key: "menuAnuncios", label: "Ocultar Gerenciador de Anúncios" },
+        { key: "menuAniversarios", label: "Ocultar Aniversários" },
+        { key: "menuJogar", label: "Ocultar Jogar" },
+        { key: "menuMessenger", label: "Ocultar Messenger" },
+        { key: "menuMessengerKids", label: "Ocultar Messenger Kids" },
+      ],
+    },
+    {
+      title: "Controles adicionais",
+      items: [
+        { key: "buscaFacebook", label: "Ocultar busca do Facebook" },
+        { key: "acaoFlutuante", label: "Ocultar botão flutuante do canto inferior direito" },
+      ],
+    },
+    {
+      title: "Rodapé",
+      items: [{ key: "rodape", label: "Ocultar texto e links do rodapé" }],
+    },
+  ],
 };
 
-const PLATFORMS = ["x", "instagram", "tiktok", "youtube"];
+const PLATFORMS = ["x", "instagram", "tiktok", "youtube", "facebook"];
 const BACKUP_VERSION = 1;
-const PLATFORM_NAMES = { x: "X", instagram: "Instagram", tiktok: "TikTok", youtube: "YouTube" };
+const PLATFORM_NAMES = {
+  x: "X",
+  instagram: "Instagram",
+  tiktok: "TikTok",
+  youtube: "YouTube",
+  facebook: "Facebook",
+};
 const PLATFORM_HOSTS = {
   "x.com": "x",
   "twitter.com": "x",
   "www.instagram.com": "instagram",
   "www.tiktok.com": "tiktok",
   "www.youtube.com": "youtube",
+  "facebook.com": "facebook",
+  "www.facebook.com": "facebook",
 };
 
 function defaultState() {
   return {
     enabled: true,
-    siteEnabled: { x: true, instagram: true, tiktok: true, youtube: true },
+    siteEnabled: { x: true, instagram: true, tiktok: true, youtube: true, facebook: true },
     x: {},
     instagram: {},
     tiktok: {},
     youtube: {},
+    facebook: {},
   };
 }
 

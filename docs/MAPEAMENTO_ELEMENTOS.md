@@ -238,6 +238,33 @@ contrário à postura conservadora do PRD §6.1) — distinto de
 3. Reordenação das abas da home do X (FY deixar de ser a 1ª).
 4. Instagram mover o rail da borda esquerda (limiar geométrico de 100px).
 
+## Facebook (facebook.com, inspeção autenticada em 2026-10-13)
+
+O Facebook expõe landmarks acessíveis úteis na home autenticada. A análise
+foi feita na aba real do Chrome do usuário, em pt-BR, sem depender das classes
+ofuscadas `x...`.
+
+| Controle | Seletor / estratégia | Fragilidade |
+|---|---|---|
+| barraPostagem | Região semântica dentro de `main` ou `[role="main"]`; fallback dinâmico pelo elemento `[role="button"]` `No que você está pensando...`/`What's on your mind` e pelos rótulos de acessibilidade dos botões de vídeo/foto no mesmo card | Média — o Facebook removeu/alterou o `aria-label` da região em algumas renderizações |
+| stories | Preferência por `main table[aria-label*="story" i]`/`[role="table"]` (a11y observado como `bandeja de stories`), com fallback dinâmico por links `/stories/`, rótulos `Criar story`/`Story de...` e contêiner delimitado | Média — a região `Stories` nem sempre recebe `role`/`aria-label`; guardas impedem subir até `main` |
+| sugestoesGrupos | Título `Suas sugestões de grupos`/`Group suggestions`, combinado com botões `Participar do grupo`/`Join group` e `Remover`/`Remove` | Média — card de recomendação pode mudar de estrutura; largura/altura e conteúdo são obrigatórios |
+| carregamentoFeed | Elementos `aria-busy`, rótulo `Carregando...`/`Loading...` e contêiner visual delimitado dentro de `main` | Média — placeholders são temporários; a regra só considera cards do feed com limites de tamanho |
+| rodape | `div[role="navigation"][aria-label="Atalhos"] footer[role="contentinfo"]` + fallback `footer[role="contentinfo"][aria-label="Facebook"]` | Baixa — landmarks observados na home |
+| acoesConta | `div[role="navigation"][aria-label="Configurações e controles da conta"]` | Baixa — landmark acessível da imagem 3 |
+| navHome/navReels/navAmigos/navGrupos/navJogos | `div[role="navigation"][aria-label="Facebook"] a[href="/"]`, `a[href^="/reel/"]`, `a[href^="/friends/"]`, `a[href^="/groups/"]`, `a[href^="/gaming/"]` | Baixa — rotas observadas ao vivo |
+| patrocinados (lateral) | `#right_rail_container[role="complementary"]` | Baixa — id e role observados; oculta a coluna inteira, que atualmente exibe os patrocinados |
+| patrocinados (feed) | Dinâmico: link/folha com aria/texto `Patrocinado`/`Sponsored`, combinado com a ação do post ou `Abrir menu do conteúdo patrocinado`, subindo até o contêiner | Média — Facebook varia o contêiner e o idioma do marcador |
+| feedInteiro / Foryou | Dinâmico: botões `Ações para este post`/`Actions for this post`, subindo com guardas para largura 450–900px, altura 160–5000px e sem `<main>`; `extraCss` bloqueia rolagem enquanto o marcador do compositor dentro de `main` ou `[role="main"]` estiver presente | Média — não há `role="article"` consistente nos posts carregados |
+| menu lateral individual / todos | Links da navegação `Atalhos`, preferindo href; fallback por rótulo para perfil, Meta AI, Amigos, Lembranças, Salvos, Grupos, Reels, Marketplace, Feeds, Eventos, anúncios, aniversários, jogos e Messenger; `menuTodos` oculta a própria navegação `Atalhos` | Média — itens opcionais e “Ver mais” podem ser renderizados sob demanda; cada linha é limitada a 180–420 px × 28–100 px |
+| buscaFacebook | Input `Pesquisar no Facebook`/`Search Facebook`, subindo ao wrapper de 180–420 px × 28–80 px | Baixa/Média — wrapper pode variar entre `form` e combobox |
+| acaoFlutuante | Botão/link fixo, absoluto ou sticky, circular, semântico (`Criar`, `Escrever`, `Publicar`, `Nova mensagem`, `Create`, `Compose`, `Write` ou `Post`) nos 150 px inferiores/direitos; `Nova mensagem` também é aceito quando o próprio elemento não expõe `position` | Média — guarda de posição e tamanho evita capturar botões normais |
+
+As regras dinâmicas preservam guardas dimensionais para não marcar `main` ou
+a página inteira. A presença dos landmarks, botões e menus foi confirmada ao
+vivo; a validação visual final das novas regras está registrada nas Rodadas
+20 e 21 do checklist.
+
 ## Atualizacao 2026-07-20 - seletores otimizados
 
 - YouTube: controles do menu lateral baseados em href estavel foram movidos

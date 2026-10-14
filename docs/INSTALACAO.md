@@ -1,6 +1,6 @@
 # Instalação local (Chrome e Brave)
 
-1. Baixe/clone a pasta do projeto (ou extraia `foco-total-v1.0.0.zip`).
+1. Baixe/clone a pasta do projeto (ou extraia `foco-total-v1.0.1.zip`).
 2. Abra `chrome://extensions` (Chrome) ou `brave://extensions` (Brave).
 3. Ative o **Modo do desenvolvedor** (canto superior direito).
 4. Clique em **Carregar sem compactação** e selecione a pasta raiz do

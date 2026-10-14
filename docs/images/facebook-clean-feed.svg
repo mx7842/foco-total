@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Facebook com o feed limpo pelo Foco Total</title>
+  <desc id="desc">Prévia da home do Facebook com navegação reduzida e feed oculto.</desc>
+  <rect width="1200" height="700" fill="#f1f3f7"/>
+  <rect width="1200" height="64" fill="#ffffff" stroke="#d9dde4"/>
+  <circle cx="34" cy="32" r="22" fill="#1877f2"/>
+  <text x="27" y="42" fill="#ffffff" font-family="Arial, sans-serif" font-size="28" font-weight="700">f</text>
+  <rect x="64" y="18" width="220" height="30" rx="15" fill="#eef0f4"/>
+  <text x="84" y="39" fill="#7b8490" font-family="Arial, sans-serif" font-size="14">Pesquisar no Facebook</text>
+  <rect x="0" y="64" width="240" height="636" fill="#eef0f4"/>
+  <circle cx="34" cy="104" r="18" fill="#dfe3e9"/>
+  <text x="65" y="110" fill="#252a31" font-family="Arial, sans-serif" font-size="17">Ver mais</text>
+  <rect x="240" y="64" width="960" height="636" fill="#f1f3f7"/>
+  <line x1="520" y1="64" x2="680" y2="64" stroke="#1877f2" stroke-width="4"/>
+  <rect x="505" y="118" width="430" height="90" rx="14" fill="#ffffff" stroke="#d9dde4"/>
+  <text x="720" y="158" text-anchor="middle" fill="#657080" font-family="Arial, sans-serif" font-size="20">Stories ocultos</text>
+  <text x="720" y="188" text-anchor="middle" fill="#8b96a4" font-family="Arial, sans-serif" font-size="15">Barra de postagem e feed Para você desativados</text>
+  <rect x="470" y="254" width="500" height="190" rx="16" fill="#ffffff" stroke="#d9dde4"/>
+  <circle cx="720" cy="310" r="30" fill="#e8ebef"/>
+  <path d="M680 390h80M700 365h40" stroke="#a5afbb" stroke-width="8" stroke-linecap="round"/>
+  <text x="720" y="420" text-anchor="middle" fill="#66717e" font-family="Arial, sans-serif" font-size="17">Feed oculto para uma navegação sem distrações</text>
+  <text x="720" y="520" text-anchor="middle" fill="#8b96a4" font-family="Arial, sans-serif" font-size="15">Patrocinados, sugestões e botão flutuante ocultos</text>
+</svg>

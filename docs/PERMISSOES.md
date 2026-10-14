@@ -5,12 +5,12 @@ Princípio: menor permissão possível (PRD §13).
 | Permissão | Por quê |
 |---|---|
 | `storage` | Salvar as preferências de ocultação localmente (`chrome.storage.local`). Nada é sincronizado nem enviado a servidores. |
-| Content scripts em `x.com`, `twitter.com`, `instagram.com`, `tiktok.com`, `www.youtube.com` | Injetar o CSS/JS de ocultação apenas nesses domínios. A extensão não roda em nenhum outro site. |
+| Content scripts em `x.com`, `twitter.com`, `instagram.com`, `tiktok.com`, `www.youtube.com`, `facebook.com` e `www.facebook.com` | Injetar o CSS/JS de ocultação apenas nesses domínios. A extensão não roda em nenhum outro site. |
 
-O popup usa `chrome.tabs.query` para saber em qual das 4 redes a aba ativa
+O popup usa `chrome.tabs.query` para saber em qual das 5 redes a aba ativa
 está e já abrir a aba certa no painel — isso **não exige permissão extra**:
 a API sempre pode ser chamada, e o `host_permissions` acima já garante que a
-URL da aba ativa é visível quando ela é uma das 4 redes suportadas (para
+URL da aba ativa é visível quando ela é uma das 5 redes suportadas (para
 qualquer outro site, a URL fica oculta e a detecção simplesmente não age).
 
 O que a extensão **não** faz:
