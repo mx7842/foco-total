@@ -404,3 +404,23 @@ individuais do menu lateral, busca e botão flutuante.
 - ✅ A aba autenticada do Chrome confirmou o estado visual final dos controles
   solicitados; o menu lateral “Ver mais” permanece disponível porque a nova
   opção `menuTodos` é independente e pode ser ligada pelo usuário.
+
+## Rodada 22 — Facebook: perfil e controles restantes (2026-10-15)
+
+- ✅ Adicionados ao popup o controle único para sugestões/amigos/fotos dentro
+  do perfil, seis abas individuais, quatro ícones superiores direitos e sete
+  itens restantes da barra lateral.
+- ✅ As regras de perfil são condicionais à rota/estrutura de perfil e usam
+  guardas de conteúdo, dimensão e landmark para não afetar a home.
+- ✅ Inspeção autenticada ao vivo confirmou os blocos: sugestões (1184×339),
+  Amigos (490×283), Fotos (490×534), abas com `role="tab"`, landmark dos
+  quatro ícones da conta e o controle localizado “Ver mais itens da seção
+  Explorar”.
+- ✅ Corrigido o fallback de stories: a home atual renderiza o card “Criar
+  story” com um único link; a guarda agora aceita esse card sem subir ao
+  contêiner do compositor/feed.
+- ⏳ Efeito visual final ainda depende de recarregar a extensão 1.0.2 na aba
+  autenticada; a aba conectada estava com o content script ausente durante a
+  inspeção (`foco-total-style` não encontrado).
+- ✅ `foco-total-v1.0.2.zip` reconstruído a partir dos arquivos atuais e
+  auditado internamente.

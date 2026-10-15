@@ -246,6 +246,32 @@ const CATALOG = {
       items: [{ key: "acoesConta", label: "Ocultar barra de ações da conta" }],
     },
     {
+      title: "Perfil do Facebook",
+      items: [
+        { key: "perfilSugestoesAmigosFotos", label: "Ocultar sugestões, amigos e fotos no perfil" },
+      ],
+    },
+    {
+      title: "Abas do perfil (imagem 4)",
+      items: [
+        { key: "perfilAbaTudo", label: "Ocultar aba Tudo" },
+        { key: "perfilAbaSobre", label: "Ocultar aba Sobre" },
+        { key: "perfilAbaAmigos", label: "Ocultar aba Amigos" },
+        { key: "perfilAbaFotos", label: "Ocultar aba Fotos" },
+        { key: "perfilAbaReels", label: "Ocultar aba Reels" },
+        { key: "perfilAbaMais", label: "Ocultar aba Mais" },
+      ],
+    },
+    {
+      title: "Ícones superiores direitos (imagem 5)",
+      items: [
+        { key: "contaMenu", label: "Ocultar ícone de menu/aplicativos" },
+        { key: "contaMessenger", label: "Ocultar ícone do Messenger" },
+        { key: "contaNotificacoes", label: "Ocultar ícone de notificações" },
+        { key: "contaPerfil", label: "Ocultar ícone do perfil/conta" },
+      ],
+    },
+    {
       title: "Navegação superior (imagem 4)",
       items: [
         { key: "navHome", label: "Ocultar ícone Página inicial" },
@@ -274,6 +300,13 @@ const CATALOG = {
         { key: "menuJogar", label: "Ocultar Jogar" },
         { key: "menuMessenger", label: "Ocultar Messenger" },
         { key: "menuMessengerKids", label: "Ocultar Messenger Kids" },
+        { key: "menuConverseIAs", label: "Ocultar Converse com IAs" },
+        { key: "menuPaginas", label: "Ocultar Páginas" },
+        { key: "menuPedidosPagamentos", label: "Ocultar Pedidos e pagamentos" },
+        { key: "menuAtividadeAnuncios", label: "Ocultar Sua atividade de anúncios" },
+        { key: "menuVideoJogos", label: "Ocultar Vídeo de jogos" },
+        { key: "menuVerMais", label: "Ocultar botão Ver mais" },
+        { key: "menuVerMenos", label: "Ocultar botão Ver menos" },
       ],
     },
     {

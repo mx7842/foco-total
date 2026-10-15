@@ -12,6 +12,24 @@ const FB_STORY_LINKS = 'a[href*="/stories/"], a[aria-label*="story" i], a[aria-l
 const FB_STORY_TRAY = 'main table[aria-label*="story" i], [role="main"] table[aria-label*="story" i], main table[aria-label*="história" i], [role="main"] table[aria-label*="história" i], main [role="table"][aria-label*="story" i], [role="main"] [role="table"][aria-label*="story" i], main [role="table"][aria-label*="história" i], [role="main"] [role="table"][aria-label*="história" i]';
 const FB_COMPOSER_REGION = 'main [role="region"][aria-label="Criar um post"], [role="main"] [role="region"][aria-label="Criar um post"], main [role="region"][aria-label="Create a post"], [role="main"] [role="region"][aria-label="Create a post"], main [aria-label="Criar um post"], [role="main"] [aria-label="Criar um post"], main [aria-label="Create a post"], [role="main"] [aria-label="Create a post"]';
 const FB_HOME_MARKER = 'main button[aria-label^="No que você está pensando"], [role="main"] button[aria-label^="No que você está pensando"], main [role="button"][aria-label^="No que você está pensando"], [role="main"] [role="button"][aria-label^="No que você está pensando"], main button[aria-label^="What\'s on your mind"], [role="main"] button[aria-label^="What\'s on your mind"], main [role="button"][aria-label^="What\'s on your mind"], [role="main"] [role="button"][aria-label^="What\'s on your mind"], main [role="region"][aria-label="Criar um post"], [role="main"] [role="region"][aria-label="Criar um post"], main [role="region"][aria-label="Create a post"], [role="main"] [role="region"][aria-label="Create a post"]';
+const FB_PROFILE_TABS = {
+  perfilAbaTudo: /^Tudo$|^Posts$|^All$/i,
+  perfilAbaSobre: /^Sobre$|^About$/i,
+  perfilAbaAmigos: /^Amigos$|^Friends$/i,
+  perfilAbaFotos: /^Fotos$|^Photos$/i,
+  perfilAbaReels: /^Reels$/i,
+  perfilAbaMais: /^Mais(?:\s|$)|^More(?:\s|$)/i,
+};
+const FB_ACCOUNT_ACTIONS = {
+  contaMenu: /Menu do Facebook|Facebook menu|^Menu$/i,
+  contaMessenger: /^Messenger$|^Mensagens$|^Messages$/i,
+  contaNotificacoes: /Notifica|Notification/i,
+};
+const FB_RESERVED_ROUTES = new Set([
+  "home", "friends", "groups", "reel", "reels", "watch", "marketplace", "events",
+  "gaming", "messages", "notifications", "settings", "privacy", "help", "bookmarks",
+  "saved", "feeds", "ads", "adsmanager", "business", "search", "photo", "photos",
+]);
 
 function all(root, selector, ctx) {
   if (ctx?.root === root && ctx.all) return ctx.all(selector);
@@ -115,8 +133,8 @@ function findStories(root, ctx) {
       const text = (node.textContent || "").slice(0, 1800);
       const hasCreate = /Criar story|Create story/i.test(text);
       const hasComposer = /No que você está pensando|What's on your mind/i.test(text);
-      return !hasComposer && links >= 2 && (hasCreate || links >= 3) &&
-        box.width >= 450 && box.width <= 1100 && box.height >= 120 && box.height <= 420;
+      return !hasComposer && links >= 1 && (hasCreate || links >= 3) &&
+        box.width >= 450 && box.width <= 1100 && box.height >= 60 && box.height <= 420;
     });
     if (candidate && !result.includes(candidate)) result.push(candidate);
   }
@@ -138,6 +156,100 @@ function findGroupSuggestions(root, ctx) {
     if (candidate && !result.includes(candidate)) result.push(candidate);
   }
   return result;
+}
+
+function isProfilePage() {
+  const path = decodeURIComponent(location.pathname).replace(/^\/+|\/+$/g, "");
+  if (path === "profile.php") return true;
+  if (!path || path.includes("/")) return false;
+  return !FB_RESERVED_ROUTES.has(path.toLowerCase());
+}
+
+function profileScope(root, ctx) {
+  if (!isProfilePage()) return null;
+  return mainScope(root, ctx);
+}
+
+function profileSection(root, ctx, headingPattern, contentPattern, options = {}) {
+  const scope = profileScope(root, ctx);
+  if (!scope) return [];
+  const headings = all(scope, 'h1, h2, h3, [role="heading"], span, div', ctx)
+    .filter((element) => headingPattern.test(labelOf(element)));
+  const result = [];
+  for (const heading of headings) {
+    const candidate = boundedAncestor(heading, (node, box) => {
+      const text = (node.textContent || "").slice(0, 2400);
+      const links = node.querySelectorAll?.("a").length || 0;
+      const images = node.querySelectorAll?.("img").length || 0;
+      return contentPattern.test(text) && links >= (options.minLinks || 1) &&
+        images >= (options.minImages || 0) &&
+        box.width >= (options.minWidth || 380) && box.width <= (options.maxWidth || 1300) &&
+        box.height >= (options.minHeight || 100) && box.height <= (options.maxHeight || 900) &&
+        !node.matches?.("main, [role=main]");
+    }, options.maxHops || 14);
+    if (candidate && !result.includes(candidate)) result.push(candidate);
+  }
+  return result;
+}
+
+function findProfileBlocks(root, ctx) {
+  return [
+    ...profileSection(root, ctx, /^Pessoas que talvez você conheça$|^People you may know$/i,
+      /Adicionar aos amigos|Add friend|Ver tudo|See all/i, { minLinks: 2, minImages: 2, minHeight: 180, maxHeight: 520 }),
+    ...profileSection(root, ctx, /^Amigos$|^Friends$/i,
+      /Ver todos os amigos|See all friends|\d+\s+amigos|\d+\s+friends/i, { minLinks: 2, minImages: 2, minHeight: 120, maxHeight: 520 }),
+    ...profileSection(root, ctx, /^Fotos$|^Photos$/i,
+      /Ver todas as fotos|See all photos/i, { minLinks: 1, minImages: 3, minHeight: 160, maxHeight: 800 }),
+  ].filter((element, index, list) => list.indexOf(element) === index);
+}
+
+function profileTabRow(scope, ctx) {
+  const controls = all(scope, 'a, button, [role="tab"], [role="button"]', ctx)
+    .filter((element) => Object.values(FB_PROFILE_TABS).some((pattern) => pattern.test(labelOf(element))));
+  if (controls.length < 2) return null;
+  const first = controls[0];
+  return boundedAncestor(first, (node, box) => {
+    const matches = [...(node.querySelectorAll?.('a, button, [role="tab"], [role="button"]') || [])]
+      .filter((element) => Object.values(FB_PROFILE_TABS).some((pattern) => pattern.test(labelOf(element))));
+    return matches.length >= 2 && box.width >= 350 && box.width <= 1200 && box.height >= 32 && box.height <= 120;
+  }, 8) || null;
+}
+
+function findProfileTabs(root, ctx, key) {
+  const scope = profileScope(root, ctx);
+  if (!scope) return [];
+  const row = profileTabRow(scope, ctx);
+  if (!row) return [];
+  return [...(row.querySelectorAll?.('a, button, [role="tab"], [role="button"]') || [])]
+    .filter((element) => FB_PROFILE_TABS[key]?.test(labelOf(element)));
+}
+
+function accountNav(root, ctx) {
+  return ctx?.one?.(FB_ACCOUNT) || root.matches?.(FB_ACCOUNT) || root.closest?.(FB_ACCOUNT) || root.querySelector?.(FB_ACCOUNT);
+}
+
+function accountControls(root, ctx) {
+  const nav = accountNav(root, ctx);
+  if (!nav) return [];
+  return [...(nav.querySelectorAll?.('a, button, [role="button"]') || [])]
+    .filter((element) => {
+      const box = rect(element);
+      return box.width >= 28 && box.width <= 100 && box.height >= 28 && box.height <= 100;
+    });
+}
+
+function findAccountAction(root, ctx, key) {
+  const controls = accountControls(root, ctx);
+  if (key === "contaPerfil") {
+    const labeled = controls.filter((element) => {
+      const label = labelOf(element);
+      return /Conta|Account|Perfil|Profile/i.test(label) ||
+        (element.querySelector?.("img, [role=img]") && !/Messenger|Notifica|Menu/i.test(label));
+    });
+    return labeled.length ? [labeled[labeled.length - 1]] : controls.slice(-1);
+  }
+  const pattern = FB_ACCOUNT_ACTIONS[key];
+  return controls.filter((element) => pattern?.test(labelOf(element)));
 }
 
 function findSkeletons(root, ctx) {
@@ -184,6 +296,16 @@ const SHORTCUT_MATCHERS = {
   menuJogar: { text: /^Jogar$|^Gaming$/i, href: /\/gaming\//i },
   menuMessenger: { text: /^Messenger$/i, href: /\/messages\//i },
   menuMessengerKids: { text: /Messenger Kids/i, href: /messenger.?kids/i },
+  menuConverseIAs: { text: /^Converse com IAs$|^Chat with AIs$|^Chat with AI$/i, href: /(?:^|\/)ai(?:\/|$)/i },
+  menuPaginas: { text: /^Páginas$|^Pages$/i, href: /(?:^|\/)pages?(?:\/|$)/i },
+  menuPedidosPagamentos: { text: /^Pedidos e pagamentos$|^Orders and payments$/i, href: /orders|payments/i },
+  menuAtividadeAnuncios: { text: /^Sua atividade de anúncios$|^Your ad activity$/i, href: /ad.?activity|ads?.?activity/i },
+  menuVideoJogos: { text: /^Vídeo de jogos$|^Gaming video$/i, href: /gaming.*video|video.*gaming/i },
+};
+
+const SHORTCUT_CONTROL_MATCHERS = {
+  menuVerMais: /^Ver mais(?:\s|$)|^See more(?:\s|$)/i,
+  menuVerMenos: /^Ver menos(?:\s|$)|^See less(?:\s|$)/i,
 };
 
 function shortcutLinks(nav, matcher) {
@@ -202,6 +324,26 @@ function shortcutRule(key) {
       const nav = shortcutNav(root, ctx);
       for (const link of shortcutLinks(nav, SHORTCUT_MATCHERS[key])) {
         const row = shortcutRow(link, nav);
+        if (visible(row)) hide(row);
+      }
+    },
+  };
+}
+
+function shortcutControlRule(key) {
+  return {
+    dynamic(root, hide, ctx) {
+      const nav = shortcutNav(root, ctx);
+      if (!nav) return;
+      const pattern = SHORTCUT_CONTROL_MATCHERS[key];
+      for (const control of [...(nav.querySelectorAll?.('button, [role="button"]') || [])]) {
+        if (!pattern?.test(labelOf(control))) continue;
+        const row = boundedAncestor(control, (node, box) => {
+          if (!nav.contains(node)) return false;
+          const controls = [...(node.querySelectorAll?.('button, [role="button"]') || [])];
+          return controls.length === 1 && controls[0] === control &&
+            box.width >= 180 && box.width <= 420 && box.height >= 28 && box.height <= 100;
+        }, 8) || control;
         if (visible(row)) hide(row);
       }
     },
@@ -303,6 +445,30 @@ FocoTotal.init("facebook", {
 
   acoesConta: { css: [FB_ACCOUNT] },
 
+  perfilSugestoesAmigosFotos: {
+    dynamic(root, hide, ctx) {
+      for (const element of findProfileBlocks(root, ctx)) {
+        if (visible(element)) hide(element);
+      }
+    },
+  },
+
+  ...Object.fromEntries(Object.keys(FB_PROFILE_TABS).map((key) => [key, {
+    dynamic(root, hide, ctx) {
+      for (const element of findProfileTabs(root, ctx, key)) {
+        if (visible(element)) hide(element);
+      }
+    },
+  }])),
+
+  ...Object.fromEntries(Object.keys(FB_ACCOUNT_ACTIONS).concat("contaPerfil").map((key) => [key, {
+    dynamic(root, hide, ctx) {
+      for (const element of findAccountAction(root, ctx, key)) {
+        if (visible(element)) hide(element);
+      }
+    },
+  }])),
+
   navHome: { css: [`${FB_NAV} a[href="/"]`] },
   navReels: { css: [`${FB_NAV} a[href^="/reel/"]`] },
   navAmigos: { css: [`${FB_NAV} a[href^="/friends/"]`] },
@@ -310,6 +476,7 @@ FocoTotal.init("facebook", {
   navJogos: { css: [`${FB_NAV} a[href^="/gaming/"]`] },
 
   ...Object.fromEntries(Object.keys(SHORTCUT_MATCHERS).map((key) => [key, shortcutRule(key)])),
+  ...Object.fromEntries(Object.keys(SHORTCUT_CONTROL_MATCHERS).map((key) => [key, shortcutControlRule(key)])),
 
   menuTodos: { css: [FB_SHORTCUTS] },
 

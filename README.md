@@ -4,7 +4,7 @@ Extensão para Chrome e Brave (Manifest V3) que remove distrações das redes
 sociais de forma seletiva. Cada item pode ser ligado ou desligado no painel,
 sem conta, sem backend, sem telemetria e sem chamadas de rede.
 
-**Versão atual: 1.0.1** · [Baixar o pacote ZIP](foco-total-v1.0.1.zip)
+**Versão atual: 1.0.2** · [Baixar o pacote ZIP](foco-total-v1.0.2.zip)
 
 ## Veja a extensão
 
@@ -20,14 +20,15 @@ real:
 - **Facebook:** barra de postagem, feed Para você/Foryou, rolagem do feed,
   stories, sugestões de grupos, placeholders de carregamento, patrocinados,
   ações da conta, ícones da navegação superior, menu lateral individual ou
-  inteiro, busca, rodapé e botão flutuante.
+  inteiro, busca, rodapé, botão flutuante e controles adicionais dentro dos
+  perfis (sugestões, Amigos, Fotos, abas e ícones superiores direitos).
 - **X, Instagram, TikTok e YouTube:** controles específicos de feed,
   navegação, recomendações, vídeos, anúncios e elementos de interface.
 - **Privacidade:** todas as configurações ficam em `chrome.storage.local`.
 
 ## Instalação
 
-1. Baixe [foco-total-v1.0.1.zip](foco-total-v1.0.1.zip) e extraia a pasta.
+1. Baixe [foco-total-v1.0.2.zip](foco-total-v1.0.2.zip) e extraia a pasta.
 2. Abra `chrome://extensions` (ou `brave://extensions`).
 3. Ative o **Modo do desenvolvedor**.
 4. Clique em **Carregar sem compactação** e selecione a pasta extraída.
@@ -60,7 +61,7 @@ icons/             ícones originais
 docs/              documentação técnica
 ```
 
-## Atualização 2026-10-13/14 — Facebook e versão 1.0.1
+## Atualização 2026-10-15 — Facebook e versão 1.0.2
 
 A implementação do Facebook foi validada em uma sessão autenticada do Chrome.
 Ela usa landmarks acessíveis e rotas observadas ao vivo, com guardas
