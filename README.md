@@ -4,7 +4,7 @@ Extensão para Chrome e Brave (Manifest V3) que remove distrações das redes
 sociais de forma seletiva. Cada item pode ser ligado ou desligado no painel,
 sem conta, sem backend, sem telemetria e sem chamadas de rede.
 
-**Versão atual: 1.0.2** · [Baixar o pacote ZIP](foco-total-v1.0.2.zip)
+**Versão atual: 1.0.3** · [Baixar o pacote ZIP](foco-total-v1.0.3.zip)
 
 ## Veja a extensão
 
@@ -28,7 +28,7 @@ real:
 
 ## Instalação
 
-1. Baixe [foco-total-v1.0.2.zip](foco-total-v1.0.2.zip) e extraia a pasta.
+1. Baixe [foco-total-v1.0.3.zip](foco-total-v1.0.3.zip) e extraia a pasta.
 2. Abra `chrome://extensions` (ou `brave://extensions`).
 3. Ative o **Modo do desenvolvedor**.
 4. Clique em **Carregar sem compactação** e selecione a pasta extraída.

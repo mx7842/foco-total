@@ -424,3 +424,11 @@ individuais do menu lateral, busca e botão flutuante.
   inspeção (`foco-total-style` não encontrado).
 - ✅ `foco-total-v1.0.2.zip` reconstruído a partir dos arquivos atuais e
   auditado internamente.
+
+## Rodada 23 — Facebook: controle do Marketplace na navegação superior (2026-10-15)
+
+- ✅ Adicionado `navMarketplace` ao popup, ao motor do Facebook e ao mapa de
+  elementos.
+- ✅ O seletor cobre as rotas `/marketplace/` e `/marketplace`.
+- ⏳ A confirmação visual depende de recarregar a extensão 1.0.3 na aba
+  autenticada do Facebook.

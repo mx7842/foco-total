@@ -278,6 +278,7 @@ const CATALOG = {
         { key: "navReels", label: "Ocultar ícone Reels" },
         { key: "navAmigos", label: "Ocultar ícone Amigos" },
         { key: "navGrupos", label: "Ocultar ícone Grupos" },
+        { key: "navMarketplace", label: "Ocultar ícone Marketplace" },
         { key: "navJogos", label: "Ocultar ícone Jogos" },
       ],
     },

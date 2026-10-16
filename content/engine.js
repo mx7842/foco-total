@@ -3,7 +3,7 @@
 "use strict";
 
 var FocoTotal = window.__FOCO_TOTAL_ENGINE__ || (() => {
-  const VERSION = "1.0.2-optimized";
+  const VERSION = "1.0.3-optimized";
   const STYLE_ID = "foco-total-style";
   const HIDE_ATTR = "data-foco-total-hide";
   const ROUTE_EVENT = "foco-total-route";

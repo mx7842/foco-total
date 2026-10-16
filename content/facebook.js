@@ -473,6 +473,7 @@ FocoTotal.init("facebook", {
   navReels: { css: [`${FB_NAV} a[href^="/reel/"]`] },
   navAmigos: { css: [`${FB_NAV} a[href^="/friends/"]`] },
   navGrupos: { css: [`${FB_NAV} a[href^="/groups/"]`] },
+  navMarketplace: { css: [`${FB_NAV} a[href^="/marketplace/"]`, `${FB_NAV} a[href="/marketplace"]`] },
   navJogos: { css: [`${FB_NAV} a[href^="/gaming/"]`] },
 
   ...Object.fromEntries(Object.keys(SHORTCUT_MATCHERS).map((key) => [key, shortcutRule(key)])),

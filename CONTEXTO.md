@@ -23,7 +23,7 @@ ver [CLAUDE.md](CLAUDE.md). Para a especificação original, ver o PRD em
   quebrava após reload (X passou a renderizar os artigos fora do
   `news_sidebar`). Ponte removida do build final.
 - Build inicial entregue: `foco-total-v1.0.0.zip`.
-- Versão atual distribuível: `foco-total-v1.0.2.zip`.
+- Versão atual distribuível: `foco-total-v1.0.3.zip`.
 
 ## Atualização 2026-10-14 — publicação 1.0.1
 
@@ -46,7 +46,7 @@ ver [CLAUDE.md](CLAUDE.md). Para a especificação original, ver o PRD em
   e toggles individuais para menu, Messenger, notificações e conta no topo.
 - A barra lateral passa a reconhecer também Converse com IAs, Páginas, Pedidos
   e pagamentos, Sua atividade de anúncios, Vídeo de jogos, Ver mais e Ver menos.
-- A versão de desenvolvimento desta rodada é `1.0.2`; a estrutura do perfil
+- A versão de desenvolvimento desta rodada é `1.0.3`; a estrutura do perfil
   autenticado foi confirmada ao vivo, mas a validação visual final depende de
   recarregar a extensão nessa aba.
 
