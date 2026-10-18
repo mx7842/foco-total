@@ -66,8 +66,8 @@ além de display:none, ex.: centralizar o feed do X quando o menu some).
 - **Rebuild do zip** após qualquer mudança em manifest/popup/
   content/icons:
   ```powershell
-  $src = "D:\DEV\extensoes\extesao-foco-navegador"
-  Compress-Archive -Path "$src\\manifest.json","$src\\popup","$src\\content","$src\\icons" -DestinationPath "$src\foco-total-v1.0.0.zip" -Force
+  $src = (Get-Location).Path
+  Compress-Archive -Path "$src\manifest.json","$src\popup","$src\content","$src\icons" -DestinationPath "$src\foco-total-v1.0.5.zip" -Force
   ```
 
 ## Armadilha conhecida: "F5 ritual"

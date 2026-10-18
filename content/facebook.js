@@ -30,6 +30,11 @@ const FB_RESERVED_ROUTES = new Set([
   "gaming", "messages", "notifications", "settings", "privacy", "help", "bookmarks",
   "saved", "feeds", "ads", "adsmanager", "business", "search", "photo", "photos",
 ]);
+const FB_PROFILE_SECTIONS = new Set([
+  "about", "friends", "friends_all", "reels", "photos", "posts", "videos", "likes",
+  "followers", "following", "events", "groups", "music", "check_ins", "map", "reviews",
+  "profile", "timeline",
+]);
 
 function all(root, selector, ctx) {
   if (ctx?.root === root && ctx.all) return ctx.all(selector);
@@ -159,22 +164,40 @@ function findGroupSuggestions(root, ctx) {
 }
 
 function isProfilePage() {
-  const path = decodeURIComponent(location.pathname).replace(/^\/+|\/+$/g, "");
-  if (path === "profile.php") return true;
-  if (!path || path.includes("/")) return false;
-  return !FB_RESERVED_ROUTES.has(path.toLowerCase());
+  const segments = decodeURIComponent(location.pathname)
+    .replace(/^\/+|\/+$/g, "")
+    .split("/")
+    .filter(Boolean)
+    .map((segment) => segment.toLowerCase());
+  if (!segments.length) return false;
+  if (segments[0] === "profile.php") return true;
+  if (FB_RESERVED_ROUTES.has(segments[0])) return false;
+  if (segments.length === 1) return true;
+  return FB_PROFILE_SECTIONS.has(segments[1]) || segments[1].startsWith("profile_");
 }
 
 function profileScope(root, ctx) {
   if (!isProfilePage()) return null;
+  if (ctx?.reason === "mutation" && root !== document && root?.nodeType === Node.ELEMENT_NODE) {
+    // Em mutações, limitar a busca ao subtree recém-adicionado evita varrer
+    // todo o main a cada atualização visual do Facebook.
+    if (!root.matches?.("main, [role=main]") && !root.closest?.("main, [role=main]")) return null;
+    return root;
+  }
   return mainScope(root, ctx);
 }
 
 function profileSection(root, ctx, headingPattern, contentPattern, options = {}) {
   const scope = profileScope(root, ctx);
   if (!scope) return [];
-  const headings = all(scope, 'h1, h2, h3, [role="heading"], span, div', ctx)
+  const semanticHeadings = all(scope, 'h1, h2, h3, [role="heading"]', ctx)
     .filter((element) => headingPattern.test(labelOf(element)));
+  // O Facebook pode remover o heading semântico durante uma atualização SPA.
+  // O fallback continua limitado ao texto exato e só é usado quando não há
+  // heading semântico correspondente no escopo atual.
+  const headings = semanticHeadings.length
+    ? semanticHeadings
+    : all(scope, 'span, div', ctx).filter((element) => headingPattern.test(labelOf(element)));
   const result = [];
   for (const heading of headings) {
     const candidate = boundedAncestor(heading, (node, box) => {
@@ -192,15 +215,49 @@ function profileSection(root, ctx, headingPattern, contentPattern, options = {})
   return result;
 }
 
+const PROFILE_BLOCK_DEFS = {
+  sugestoes: {
+    heading: /^(?:Pessoas que talvez você conheça|Sugestões de amigos|Pessoas próximas|People you may know|Suggested friends|People nearby)$/i,
+    content: /Adicionar aos amigos|Add friend|Ver tudo|See all|Remover recomendação|Remove recommendation/i,
+    options: { minLinks: 2, minImages: 2, minHeight: 180, maxHeight: 620 },
+  },
+  dadosPessoais: {
+    heading: /^Dados pessoais$|^Personal details$/i,
+    content: /Aniversário|Birthday|Data de nascimento|Date of birth/i,
+    options: { minLinks: 1, minImages: 0, minWidth: 300, maxWidth: 700, minHeight: 70, maxHeight: 420 },
+  },
+  amigos: {
+    heading: /^Amigos$|^Friends$/i,
+    content: /Ver todos os amigos|See all friends|\d+\s+amigos|\d+\s+friends/i,
+    options: { minLinks: 2, minImages: 2, minHeight: 120, maxHeight: 520 },
+  },
+  fotos: {
+    heading: /^Fotos$|^Photos$/i,
+    content: /Ver todas as fotos|See all photos|Fotos do perfil|Profile photos/i,
+    options: { minLinks: 1, minImages: 3, minHeight: 160, maxHeight: 800 },
+  },
+};
+
+function findProfileBlock(root, ctx, kind) {
+  const definition = PROFILE_BLOCK_DEFS[kind];
+  if (!definition) return [];
+  return profileSection(root, ctx, definition.heading, definition.content, definition.options);
+}
+
 function findProfileBlocks(root, ctx) {
-  return [
-    ...profileSection(root, ctx, /^Pessoas que talvez você conheça$|^People you may know$/i,
-      /Adicionar aos amigos|Add friend|Ver tudo|See all/i, { minLinks: 2, minImages: 2, minHeight: 180, maxHeight: 520 }),
-    ...profileSection(root, ctx, /^Amigos$|^Friends$/i,
-      /Ver todos os amigos|See all friends|\d+\s+amigos|\d+\s+friends/i, { minLinks: 2, minImages: 2, minHeight: 120, maxHeight: 520 }),
-    ...profileSection(root, ctx, /^Fotos$|^Photos$/i,
-      /Ver todas as fotos|See all photos/i, { minLinks: 1, minImages: 3, minHeight: 160, maxHeight: 800 }),
-  ].filter((element, index, list) => list.indexOf(element) === index);
+  return Object.keys(PROFILE_BLOCK_DEFS)
+    .flatMap((kind) => findProfileBlock(root, ctx, kind))
+    .filter((element, index, list) => list.indexOf(element) === index);
+}
+
+function profileBlockRule(kind) {
+  return {
+    dynamic(root, hide, ctx) {
+      for (const element of findProfileBlock(root, ctx, kind)) {
+        if (visible(element)) hide(element);
+      }
+    },
+  };
 }
 
 function profileTabRow(scope, ctx) {
@@ -395,12 +452,12 @@ FocoTotal.init("facebook", {
   },
 
   feedInteiro: {
-    extraCss: `
-      html:has(${FB_HOME_MARKER}), body:has(${FB_HOME_MARKER}) {
-        overflow: hidden !important;
-        overscroll-behavior: none !important;
-      }
-    `,
+    extraCss: ({ pathname }) => pathname === "/" ? `
+        html:has(${FB_HOME_MARKER}), body:has(${FB_HOME_MARKER}) {
+          overflow: hidden !important;
+          overscroll-behavior: none !important;
+        }
+      ` : "",
     dynamic(root, hide, ctx) {
       if (location.pathname !== "/") return;
       hidePosts(root, hide, FB_POST_ACTIONS, ctx, FB_POST_ACTIONS, false);
@@ -427,7 +484,9 @@ FocoTotal.init("facebook", {
   },
 
   patrocinados: {
-    css: ['#right_rail_container[role="complementary"]'],
+    css: ({ pathname }) => pathname === "/"
+      ? ['#right_rail_container[role="complementary"]']
+      : [],
     dynamic(root, hide, ctx) {
       if (location.pathname !== "/") return;
       for (const element of all(root, '[aria-label*="Patrocinado"], [aria-label*="Sponsored"]', ctx)) {
@@ -445,6 +504,11 @@ FocoTotal.init("facebook", {
 
   acoesConta: { css: [FB_ACCOUNT] },
 
+  perfilSugestoes: profileBlockRule("sugestoes"),
+  perfilDadosPessoais: profileBlockRule("dadosPessoais"),
+  perfilAmigos: profileBlockRule("amigos"),
+  perfilFotos: profileBlockRule("fotos"),
+  // Compatibilidade temporária para instalações que ainda têm a chave antiga.
   perfilSugestoesAmigosFotos: {
     dynamic(root, hide, ctx) {
       for (const element of findProfileBlocks(root, ctx)) {

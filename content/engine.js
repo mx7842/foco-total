@@ -3,7 +3,7 @@
 "use strict";
 
 var FocoTotal = window.__FOCO_TOTAL_ENGINE__ || (() => {
-  const VERSION = "1.0.3-optimized";
+  const VERSION = "1.0.5-optimized";
   const STYLE_ID = "foco-total-style";
   const HIDE_ATTR = "data-foco-total-hide";
   const ROUTE_EVENT = "foco-total-route";
@@ -20,6 +20,14 @@ var FocoTotal = window.__FOCO_TOTAL_ENGINE__ || (() => {
   let observedDynamic = new Set();
   let lastCss = "";
   let lastRuleSignature = "";
+
+  function hasValidRuntime() {
+    try {
+      return Boolean(globalThis.chrome?.runtime?.id);
+    } catch {
+      return false;
+    }
+  }
 
   function isActive() {
     return state.enabled && state.siteOn;
@@ -45,11 +53,20 @@ var FocoTotal = window.__FOCO_TOTAL_ENGINE__ || (() => {
   function buildCss(keys = activeKeys()) {
     const selectors = [];
     const extra = [];
+    const context = {
+      platform,
+      pathname: location.pathname,
+      href: location.href,
+    };
     for (const key of keys) {
       const rule = rules[key];
-      if (rule.css) selectors.push(...rule.css);
+      const css = typeof rule.css === "function" ? rule.css(context) : rule.css;
+      if (css) selectors.push(...(Array.isArray(css) ? css : [css]));
       if (rule.dynamic) selectors.push(`[${HIDE_ATTR}~="${key}"]`);
-      if (rule.extraCss) extra.push(rule.extraCss);
+      const extraCss = typeof rule.extraCss === "function"
+        ? rule.extraCss(context)
+        : rule.extraCss;
+      if (extraCss) extra.push(extraCss);
     }
     let css = selectors.length
       ? `${selectors.join(",\n")} { display: none !important; }`
@@ -82,6 +99,25 @@ var FocoTotal = window.__FOCO_TOTAL_ENGINE__ || (() => {
       if (keys.length) el.setAttribute(HIDE_ATTR, keys.join(" "));
       else el.removeAttribute(HIDE_ATTR);
     }
+  }
+
+  function clearAllMarks() {
+    for (const el of document.querySelectorAll(`[${HIDE_ATTR}]`)) {
+      el.removeAttribute(HIDE_ATTR);
+    }
+  }
+
+  function deactivateVisuals() {
+    observer?.disconnect();
+    observer = null;
+    clearAllMarks();
+    document.getElementById(STYLE_ID)?.remove();
+    lastCss = "";
+    lastRuleSignature = "";
+    activeDynamic.clear();
+    observedDynamic.clear();
+    pendingRoots.clear();
+    scheduled = false;
   }
 
   function mark(el, key) {
@@ -132,19 +168,30 @@ var FocoTotal = window.__FOCO_TOTAL_ENGINE__ || (() => {
 
   function runDynamicIncremental() {
     scheduled = false;
+    if (!hasValidRuntime()) {
+      deactivateVisuals();
+      return;
+    }
     if (!observedDynamic.size) {
       pendingRoots.clear();
       return;
     }
     const roots = [...pendingRoots].filter((node) => node.isConnected);
     pendingRoots.clear();
-    for (const root of roots) {
+    const compactRoots = roots.filter((root, index, list) =>
+      !list.some((other, otherIndex) => otherIndex !== index && other.contains(root))
+    );
+    for (const root of compactRoots) {
       const context = makeContext("mutation", root);
       for (const key of observedDynamic) runRule(key, root, "mutation", context);
     }
   }
 
   function scheduleFromMutations(mutations) {
+    if (!hasValidRuntime()) {
+      deactivateVisuals();
+      return;
+    }
     for (const mutation of mutations) {
       for (const node of mutation.addedNodes) {
         if (node.nodeType === Node.ELEMENT_NODE) pendingRoots.add(node);
@@ -156,7 +203,7 @@ var FocoTotal = window.__FOCO_TOTAL_ENGINE__ || (() => {
   }
 
   function connectObserverIfNeeded() {
-    if (!observedDynamic.size || observer || !chrome.runtime?.id) return;
+    if (!observedDynamic.size || observer || !hasValidRuntime()) return;
     const start = () => {
       if (!document.body || observer || !observedDynamic.size) return;
       observer = new MutationObserver(scheduleFromMutations);
@@ -196,22 +243,28 @@ var FocoTotal = window.__FOCO_TOTAL_ENGINE__ || (() => {
   }
 
   function reconcile(reason) {
-    if (!chrome.runtime?.id) {
-      observer?.disconnect();
-      observer = null;
+    if (!hasValidRuntime()) {
+      deactivateVisuals();
       return;
     }
 
     const keys = activeKeys();
+    if (!isActive()) {
+      deactivateVisuals();
+      return;
+    }
+
     const nextDynamic = new Set(dynamicKeys(keys));
     const nextObserved = new Set(observedDynamicKeys(keys));
+    if (reason === "route") {
+      for (const key of new Set([...activeDynamic, ...nextDynamic])) clearMarks(key);
+    }
     for (const key of activeDynamic) {
       if (!nextDynamic.has(key)) clearMarks(key);
     }
     activeDynamic = nextDynamic;
     observedDynamic = nextObserved;
 
-    const nextSignature = signature(keys);
     applyStyle(keys);
     if (signature([...activeDynamic]) !== lastRuleSignature) {
       lastRuleSignature = signature([...activeDynamic]);
@@ -230,13 +283,25 @@ var FocoTotal = window.__FOCO_TOTAL_ENGINE__ || (() => {
     rules = ruleDefs || {};
     patchRouteEvents();
 
-    const data = await chrome.storage.local.get(["enabled", "siteEnabled", platform]);
+    if (!hasValidRuntime()) return;
+    let data;
+    try {
+      data = await chrome.storage.local.get(["enabled", "siteEnabled", platform]);
+    } catch {
+      deactivateVisuals();
+      return;
+    }
+    if (!hasValidRuntime()) return;
     state.enabled = data.enabled !== false;
     state.siteOn = (data.siteEnabled || {})[platform] !== false;
     state.prefs = data[platform] || {};
 
     if (storageListener) chrome.storage.onChanged.removeListener(storageListener);
     storageListener = (changes, area) => {
+      if (!hasValidRuntime()) {
+        deactivateVisuals();
+        return;
+      }
       if (area !== "local") return;
       if (changes.enabled) state.enabled = changes.enabled.newValue !== false;
       if (changes.siteEnabled) state.siteOn = (changes.siteEnabled.newValue || {})[platform] !== false;

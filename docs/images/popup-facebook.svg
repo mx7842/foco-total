@@ -7,30 +7,33 @@
   <circle cx="72" cy="78" r="13" fill="#101510"/>
   <text x="120" y="74" fill="#f3f7ef" font-family="Arial, sans-serif" font-size="30" font-weight="700">Foco Total</text>
   <text x="120" y="102" fill="#a5b29e" font-family="Arial, sans-serif" font-size="17">Oculte distrações das redes sociais</text>
-  <rect x="820" y="50" width="112" height="48" rx="24" fill="#a4f21a"/>
-  <circle cx="906" cy="74" r="18" fill="#f7fff1"/>
-  <text x="56" y="154" fill="#b9f735" font-family="Arial, sans-serif" font-size="16" font-weight="700">FACEBOOK · v1.0.3</text>
+  <rect x="820" y="50" width="48" height="48" rx="10" fill="#101510" stroke="#30442a"/>
+  <text x="833" y="83" fill="#b9f735" font-family="Arial, sans-serif" font-size="25">↻</text>
+  <rect x="876" y="50" width="48" height="48" rx="10" fill="#101510" stroke="#30442a"/>
+  <text x="889" y="83" fill="#b9f735" font-family="Arial, sans-serif" font-size="24">⚙</text>
+  <text x="56" y="154" fill="#b9f735" font-family="Arial, sans-serif" font-size="16" font-weight="700">FACEBOOK · v1.0.5</text>
   <rect x="48" y="178" width="904" height="70" rx="12" fill="#0b0f0b" stroke="#30442a"/>
   <text x="72" y="221" fill="#f3f7ef" font-family="Arial, sans-serif" font-size="20">Ativado no Facebook</text>
   <circle cx="886" cy="213" r="18" fill="#a4f21a"/>
   <circle cx="892" cy="213" r="12" fill="#f7fff1"/>
-  <text x="58" y="288" fill="#a4f21a" font-family="Arial, sans-serif" font-size="15" font-weight="700">FEED E PUBLICAÇÃO</text>
+  <rect x="48" y="260" width="904" height="48" rx="10" fill="#101510" stroke="#30442a"/>
+  <text x="72" y="291" fill="#b9f735" font-family="Arial, sans-serif" font-size="18">↻ Restaurar configurações do Facebook</text>
+  <text x="58" y="346" fill="#a4f21a" font-family="Arial, sans-serif" font-size="15" font-weight="700">FEED E PUBLICAÇÃO</text>
   <g font-family="Arial, sans-serif" font-size="19" fill="#f3f7ef">
-    <rect x="48" y="308" width="904" height="58" rx="10" fill="#171e15"/>
-    <text x="72" y="344">Ocultar barra de postagem</text>
-    <rect x="48" y="376" width="904" height="58" rx="10" fill="#171e15"/>
-    <text x="72" y="412">Ocultar feed Para você / Foryou</text>
-    <rect x="48" y="444" width="904" height="58" rx="10" fill="#171e15"/>
-    <text x="72" y="480">Ocultar stories</text>
-    <rect x="48" y="512" width="904" height="58" rx="10" fill="#171e15"/>
-    <text x="72" y="548">Ocultar sugestões de grupos</text>
+    <rect x="48" y="366" width="904" height="58" rx="10" fill="#171e15"/>
+    <text x="72" y="402">Ocultar barra de postagem</text>
+    <rect x="48" y="434" width="904" height="58" rx="10" fill="#171e15"/>
+    <text x="72" y="470">Ocultar feed Para você / Foryou</text>
+    <rect x="48" y="502" width="904" height="58" rx="10" fill="#171e15"/>
+    <text x="72" y="538">Ocultar stories</text>
+    <rect x="48" y="570" width="904" height="58" rx="10" fill="#171e15"/>
+    <text x="72" y="606">Ocultar sugestões de grupos</text>
   </g>
   <g fill="#a4f21a">
-    <rect x="870" y="322" width="54" height="30" rx="15"/><circle cx="909" cy="337" r="11" fill="#f7fff1"/>
-    <rect x="870" y="390" width="54" height="30" rx="15"/><circle cx="909" cy="405" r="11" fill="#f7fff1"/>
-    <rect x="870" y="458" width="54" height="30" rx="15"/><circle cx="909" cy="473" r="11" fill="#f7fff1"/>
-    <rect x="870" y="526" width="54" height="30" rx="15"/><circle cx="909" cy="541" r="11" fill="#f7fff1"/>
+    <rect x="870" y="380" width="54" height="30" rx="15"/><circle cx="909" cy="395" r="11" fill="#f7fff1"/>
+    <rect x="870" y="448" width="54" height="30" rx="15"/><circle cx="909" cy="463" r="11" fill="#f7fff1"/>
+    <rect x="870" y="516" width="54" height="30" rx="15"/><circle cx="909" cy="531" r="11" fill="#f7fff1"/>
+    <rect x="870" y="584" width="54" height="30" rx="15"/><circle cx="909" cy="599" r="11" fill="#f7fff1"/>
   </g>
-  <text x="58" y="624" fill="#a4f21a" font-family="Arial, sans-serif" font-size="15" font-weight="700">CONTROLES ADICIONAIS</text>
-  <text x="58" y="654" fill="#b8c3b2" font-family="Arial, sans-serif" font-size="17">Busca · menu lateral · patrocinados · botão flutuante</text>
+  <text x="58" y="654" fill="#a4f21a" font-family="Arial, sans-serif" font-size="15" font-weight="700">CONTROLES ADICIONAIS</text>
 </svg>

@@ -9,6 +9,9 @@ pt-BR), janela 1920×855.
 - Ocultação por CSS injetado numa única `<style id="foco-total-style">`;
   regras dinâmicas marcam nós com `data-foco-total-hide` via um único
   `MutationObserver` por página.
+- `css` e `extraCss` podem ser strings/arrays estáticos ou funções de contexto
+  que recebem `{ platform, pathname, href }`; regras sensíveis à navegação são
+  emitidas somente na rota permitida.
 - Ordem de preferência de seletor: `data-testid`/`data-e2e` → roles/aria
   estruturais → `href` de rotas → sufixo de componente em classes ofuscadas →
   dicionário de texto pt/en (último recurso, documentado).
@@ -253,21 +256,35 @@ ofuscadas `x...`.
 | rodape | `div[role="navigation"][aria-label="Atalhos"] footer[role="contentinfo"]` + fallback `footer[role="contentinfo"][aria-label="Facebook"]` | Baixa — landmarks observados na home |
 | acoesConta | `div[role="navigation"][aria-label="Configurações e controles da conta"]` | Baixa — landmark acessível da imagem 3 |
 | navHome/navReels/navAmigos/navGrupos/navMarketplace/navJogos | `div[role="navigation"][aria-label="Facebook"] a[href="/"]`, `a[href^="/reel/"]`, `a[href^="/friends/"]`, `a[href^="/groups/"]`, `a[href^="/marketplace/"]` ou `a[href="/marketplace"]`, `a[href^="/gaming/"]` | Baixa — rotas observadas ao vivo; Marketplace pode aparecer com ou sem barra final |
-| patrocinados (lateral) | `#right_rail_container[role="complementary"]` | Baixa — id e role observados; oculta a coluna inteira, que atualmente exibe os patrocinados |
+| patrocinados (lateral) | CSS dependente da rota: `#right_rail_container[role="complementary"]` somente em `/`; a lógica dinâmica de feed continua no escopo do feed | Média — id e role foram observados, mas a coluna não deve ser ocultada em perfil, Reels, Fotos ou rotas globais |
 | patrocinados (feed) | Dinâmico: link/folha com aria/texto `Patrocinado`/`Sponsored`, combinado com a ação do post ou `Abrir menu do conteúdo patrocinado`, subindo até o contêiner | Média — Facebook varia o contêiner e o idioma do marcador |
-| feedInteiro / Foryou | Dinâmico: botões `Ações para este post`/`Actions for this post`, subindo com guardas para largura 450–900px, altura 160–5000px e sem `<main>`; `extraCss` bloqueia rolagem enquanto o marcador do compositor dentro de `main` ou `[role="main"]` estiver presente | Média — não há `role="article"` consistente nos posts carregados |
+| feedInteiro / Foryou | Dinâmico: botões `Ações para este post`/`Actions for this post`, subindo com guardas para largura 450–900px, altura 160–5000px e sem `<main>`; `extraCss` dependente da rota bloqueia rolagem somente em `/`, enquanto o marcador do compositor dentro de `main` ou `[role="main"]` estiver presente | Média — não há `role="article"` consistente nos posts carregados |
 | menu lateral individual / todos | Links da navegação `Atalhos`, preferindo href; fallback por rótulo para perfil, Meta AI, Amigos, Lembranças, Salvos, Grupos, Reels, Marketplace, Feeds, Eventos, anúncios, aniversários, jogos e Messenger; `menuTodos` oculta a própria navegação `Atalhos` | Média — itens opcionais e “Ver mais” podem ser renderizados sob demanda; cada linha é limitada a 180–420 px × 28–100 px |
 | menu lateral — itens adicionais | Links/controles por texto e href para `Converse com IAs`, `Páginas`, `Pedidos e pagamentos`, `Sua atividade de anúncios`, `Vídeo de jogos`, `Ver mais` e `Ver menos` | Média — o Facebook pode traduzir, reordenar ou renderizar esses itens somente após expandir o menu |
 | buscaFacebook | Input `Pesquisar no Facebook`/`Search Facebook`, subindo ao wrapper de 180–420 px × 28–80 px | Baixa/Média — wrapper pode variar entre `form` e combobox |
 | acaoFlutuante | Botão/link fixo, absoluto ou sticky, circular, semântico (`Criar`, `Escrever`, `Publicar`, `Nova mensagem`, `Create`, `Compose`, `Write` ou `Post`) nos 150 px inferiores/direitos; `Nova mensagem` também é aceito quando o próprio elemento não expõe `position` | Média — guarda de posição e tamanho evita capturar botões normais |
-| perfilSugestoesAmigosFotos | Em perfil, blocos delimitados pelos títulos `Pessoas que talvez você conheça`, `Amigos` e `Fotos`, combinados com links/cards/imagens e ações `Adicionar aos amigos`, `Ver todos os amigos` e `Ver todas as fotos`; a faixa observada de sugestões chega a 1184px de largura | Média — títulos e cartões podem variar; a regra exige rota de perfil, `main/[role="main"]` e limites dimensionais até 1300px |
+| perfilSugestoes | Em perfil e subrotas reconhecidas (`/usuario/`, `/usuario/reels/`, `/usuario/photos/`, `/usuario/friends/`, `/usuario/about/`, `/usuario/posts/`), prioriza headings semânticos (`h1`/`h2`/`h3`/`[role="heading"]`) com os rótulos `Pessoas que talvez você conheça`, `Sugestões de amigos`, `Pessoas próximas` e equivalentes em inglês; combina links/cards/imagens com ações `Adicionar aos amigos`, `Ver tudo` e `Remover recomendação` | Média — o Facebook pode localizar ou simplificar o heading; a regra exige rota de perfil, ações/conteúdo do card e limites dimensionais entre 180–620px de altura |
+| perfilDadosPessoais | Nas mesmas subrotas de perfil, heading `Dados pessoais`/`Personal details`, combinado com marcadores `Aniversário`, `Birthday`, `Data de nascimento` ou `Date of birth`, dentro de um card estreito do perfil | Média — o conteúdo pode variar conforme a conta; a regra exige marcador de dado pessoal e limites de 300–700px de largura e 70–420px de altura |
+| perfilAmigos | Nas mesmas subrotas de perfil, heading `Amigos`/`Friends`, combinado com `Ver todos os amigos`, `See all friends` ou contagem de amigos, além de links/imagens dos perfis | Média — o mesmo texto aparece na aba de navegação; dimensões, links e imagens diferenciam o card do perfil da aba |
+| perfilFotos | Nas mesmas subrotas de perfil, heading `Fotos`/`Photos`, combinado com `Ver todas as fotos`, `See all photos`, `Fotos do perfil` ou `Profile photos`, além de imagens do card | Média — o Facebook pode mudar a quantidade de fotos; a regra exige conteúdo visual e limites dimensionais para não atingir a coluna inteira |
+| perfilSugestoesAmigosFotos (legado) | Chave interna temporária para instalações antigas; ao abrir o popup, seu estado é migrado para `perfilSugestoes`, `perfilDadosPessoais`, `perfilAmigos` e `perfilFotos` | Compatibilidade de uma versão — não aparece no catálogo nem em novos backups |
 | abas do perfil | Em perfil, controles `Tudo`, `Sobre`, `Amigos`, `Fotos`, `Reels` e `Mais` somente dentro de uma faixa que contenha pelo menos duas abas reconhecidas | Média — Facebook alterna entre links, botões e `role="tab"` |
 | ícones superiores direitos | Filhos circulares da navegação `Configurações e controles da conta`, identificados por rótulos de menu, Messenger, notificações e conta/avatar | Média — alguns rótulos são localizados ou omitidos; a conta usa fallback por avatar/último controle delimitado |
 
 As regras dinâmicas preservam guardas dimensionais para não marcar `main` ou
-a página inteira. A presença dos landmarks, botões e menus foi confirmada ao
-vivo; a validação visual final das novas regras está registrada nas Rodadas
-20 e 21 do checklist.
+a página inteira. O motor limpa marcas e estilo ao desativar, ao sair de uma
+rota e ao detectar um script órfão; em mutações incrementais, a busca fica
+limitada à raiz adicionada para não varrer o `main` inteiro repetidamente. A
+presença dos landmarks, botões e menus foi confirmada ao vivo; a validação
+visual final das novas regras está registrada nas Rodadas 20 e 21 do checklist.
+
+No Facebook, a limpeza/reexecução também ocorre em cada navegação SPA. O
+perfil só é aceito quando a URL representa o perfil de um usuário e uma de
+suas subrotas; rotas globais como `/friends/`, `/groups/`, `/reels/`,
+`/marketplace/` e `/watch/` são rejeitadas. Isso evita que heurísticas de
+heading/texto capturem a página global. O acesso ao runtime é protegido para
+que um content script órfão, após reload da extensão, remova suas marcas sem
+falhar.
 
 ## Atualizacao 2026-07-20 - seletores otimizados
 

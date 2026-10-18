@@ -226,7 +226,7 @@ const CATALOG = {
   ],
   facebook: [
     {
-      title: "Feed e publicação",
+      title: "Página inicial — Feed e publicação",
       items: [
         { key: "barraPostagem", label: "Ocultar barra de postagem" },
         { key: "feedInteiro", label: "Ocultar feed Para você / Foryou e travar rolagem" },
@@ -236,43 +236,13 @@ const CATALOG = {
       ],
     },
     {
-      title: "Publicidade",
+      title: "Página inicial — Publicidade",
       items: [
         { key: "patrocinados", label: "Ocultar patrocinados (lateral e feed)" },
       ],
     },
     {
-      title: "Ações da conta (imagem 3)",
-      items: [{ key: "acoesConta", label: "Ocultar barra de ações da conta" }],
-    },
-    {
-      title: "Perfil do Facebook",
-      items: [
-        { key: "perfilSugestoesAmigosFotos", label: "Ocultar sugestões, amigos e fotos no perfil" },
-      ],
-    },
-    {
-      title: "Abas do perfil (imagem 4)",
-      items: [
-        { key: "perfilAbaTudo", label: "Ocultar aba Tudo" },
-        { key: "perfilAbaSobre", label: "Ocultar aba Sobre" },
-        { key: "perfilAbaAmigos", label: "Ocultar aba Amigos" },
-        { key: "perfilAbaFotos", label: "Ocultar aba Fotos" },
-        { key: "perfilAbaReels", label: "Ocultar aba Reels" },
-        { key: "perfilAbaMais", label: "Ocultar aba Mais" },
-      ],
-    },
-    {
-      title: "Ícones superiores direitos (imagem 5)",
-      items: [
-        { key: "contaMenu", label: "Ocultar ícone de menu/aplicativos" },
-        { key: "contaMessenger", label: "Ocultar ícone do Messenger" },
-        { key: "contaNotificacoes", label: "Ocultar ícone de notificações" },
-        { key: "contaPerfil", label: "Ocultar ícone do perfil/conta" },
-      ],
-    },
-    {
-      title: "Navegação superior (imagem 4)",
+      title: "Cabeçalho e navegação",
       items: [
         { key: "navHome", label: "Ocultar ícone Página inicial" },
         { key: "navReels", label: "Ocultar ícone Reels" },
@@ -280,10 +250,15 @@ const CATALOG = {
         { key: "navGrupos", label: "Ocultar ícone Grupos" },
         { key: "navMarketplace", label: "Ocultar ícone Marketplace" },
         { key: "navJogos", label: "Ocultar ícone Jogos" },
+        { key: "acoesConta", label: "Ocultar barra de ações da conta" },
+        { key: "contaMenu", label: "Ocultar ícone de menu/aplicativos" },
+        { key: "contaMessenger", label: "Ocultar ícone do Messenger" },
+        { key: "contaNotificacoes", label: "Ocultar ícone de notificações" },
+        { key: "contaPerfil", label: "Ocultar ícone do perfil/conta" },
       ],
     },
     {
-      title: "Menu lateral esquerdo",
+      title: "Página inicial — Menu lateral esquerdo",
       items: [
         { key: "menuTodos", label: "Ocultar todos os itens do menu lateral" },
         { key: "menuPerfil", label: "Ocultar Perfil" },
@@ -311,15 +286,35 @@ const CATALOG = {
       ],
     },
     {
-      title: "Controles adicionais",
+      title: "Página inicial — Controles adicionais",
       items: [
         { key: "buscaFacebook", label: "Ocultar busca do Facebook" },
         { key: "acaoFlutuante", label: "Ocultar botão flutuante do canto inferior direito" },
       ],
     },
     {
-      title: "Rodapé",
+      title: "Página inicial — Rodapé",
       items: [{ key: "rodape", label: "Ocultar texto e links do rodapé" }],
+    },
+    {
+      title: "Perfil do Facebook",
+      items: [
+        { key: "perfilSugestoes", label: "Ocultar Pessoas que talvez você conheça" },
+        { key: "perfilDadosPessoais", label: "Ocultar dados pessoais" },
+        { key: "perfilAmigos", label: "Ocultar Amigos do perfil" },
+        { key: "perfilFotos", label: "Ocultar Fotos do perfil" },
+      ],
+    },
+    {
+      title: "Abas do perfil",
+      items: [
+        { key: "perfilAbaTudo", label: "Ocultar aba Tudo" },
+        { key: "perfilAbaSobre", label: "Ocultar aba Sobre" },
+        { key: "perfilAbaAmigos", label: "Ocultar aba Amigos" },
+        { key: "perfilAbaFotos", label: "Ocultar aba Fotos" },
+        { key: "perfilAbaReels", label: "Ocultar aba Reels" },
+        { key: "perfilAbaMais", label: "Ocultar aba Mais" },
+      ],
     },
   ],
 };
@@ -342,6 +337,13 @@ const PLATFORM_HOSTS = {
   "facebook.com": "facebook",
   "www.facebook.com": "facebook",
 };
+const LEGACY_FACEBOOK_PROFILE_KEY = "perfilSugestoesAmigosFotos";
+const FACEBOOK_PROFILE_RULE_KEYS = [
+  "perfilSugestoes",
+  "perfilDadosPessoais",
+  "perfilAmigos",
+  "perfilFotos",
+];
 
 function defaultState() {
   return {
@@ -364,6 +366,20 @@ function knownRuleKeys(platform) {
   return new Set(CATALOG[platform].flatMap((group) => group.items.map((item) => item.key)));
 }
 
+function migrateFacebookProfileRules(profile) {
+  const next = { ...(profile || {}) };
+  const legacy = next[LEGACY_FACEBOOK_PROFILE_KEY];
+  if (typeof legacy !== "boolean") return { state: next, changed: false };
+
+  if (legacy) {
+    for (const key of FACEBOOK_PROFILE_RULE_KEYS) {
+      if (typeof next[key] !== "boolean") next[key] = true;
+    }
+  }
+  delete next[LEGACY_FACEBOOK_PROFILE_KEY];
+  return { state: next, changed: true };
+}
+
 function normalizedState(candidate) {
   const source = candidate?.settings;
   if (!source || typeof source !== "object" || candidate.format !== "foco-total" || candidate.version !== BACKUP_VERSION) return null;
@@ -382,6 +398,13 @@ function normalizedState(candidate) {
     for (const key of knownRuleKeys(platform)) {
       if (typeof source[platform][key] === "boolean") next[platform][key] = source[platform][key];
     }
+  }
+  const legacyFacebook = source.facebook?.[LEGACY_FACEBOOK_PROFILE_KEY];
+  if (typeof legacyFacebook === "boolean") {
+    next.facebook = migrateFacebookProfileRules({
+      ...next.facebook,
+      [LEGACY_FACEBOOK_PROFILE_KEY]: legacyFacebook,
+    }).state;
   }
   return next;
 }
@@ -478,6 +501,37 @@ function renderPanel(platform) {
   ));
   fragment.appendChild(siteCard);
 
+  const platformReset = document.createElement("button");
+  platformReset.className = "platform-reset-btn";
+  platformReset.type = "button";
+  platformReset.textContent = `↻ Restaurar configurações do ${PLATFORM_NAMES[platform]}`;
+  platformReset.dataset.scope = "platform-reset";
+  platformReset.dataset.platform = platform;
+  fragment.appendChild(platformReset);
+
+  const platformConfirm = document.createElement("div");
+  platformConfirm.className = "confirm platform-reset-confirm";
+  platformConfirm.hidden = true;
+  const confirmText = document.createElement("p");
+  confirmText.textContent = `Desligar todas as regras do ${PLATFORM_NAMES[platform]}?`;
+  const confirmActions = document.createElement("div");
+  confirmActions.className = "confirm-actions";
+  const confirmYes = document.createElement("button");
+  confirmYes.className = "btn-danger";
+  confirmYes.type = "button";
+  confirmYes.textContent = "Restaurar";
+  confirmYes.dataset.action = "platform-reset-yes";
+  confirmYes.dataset.platform = platform;
+  const confirmNo = document.createElement("button");
+  confirmNo.className = "btn-ghost";
+  confirmNo.type = "button";
+  confirmNo.textContent = "Cancelar";
+  confirmNo.dataset.action = "platform-reset-no";
+  confirmNo.dataset.platform = platform;
+  confirmActions.append(confirmYes, confirmNo);
+  platformConfirm.append(confirmText, confirmActions);
+  fragment.appendChild(platformConfirm);
+
   for (const group of CATALOG[platform]) {
     const title = document.createElement("h2");
     title.className = "group-title";
@@ -547,14 +601,38 @@ function resetAll() {
   persist(state);
 }
 
+function resetPlatform(platform) {
+  if (!PLATFORMS.includes(platform)) return;
+  state[platform] = {};
+  renderedPanels.delete(platform);
+  const panel = document.getElementById(`panel-${platform}`);
+  panel.textContent = "";
+  renderPanel(platform);
+  updateCount();
+  persist({ [platform]: state[platform] });
+}
+
 function initEvents() {
   document.addEventListener("click", (event) => {
     const btn = event.target.closest("button");
     if (!btn) return;
     if (btn.classList.contains("toggle")) handleToggleClick(btn);
-    else if (btn.id === "reset-btn") document.getElementById("reset-confirm").hidden = false;
+    else if (btn.id === "reset-all-btn") document.getElementById("reset-confirm").hidden = false;
     else if (btn.id === "reset-no") document.getElementById("reset-confirm").hidden = true;
     else if (btn.id === "reset-yes") resetAll();
+    else if (btn.dataset.scope === "platform-reset") {
+      const panel = btn.parentElement;
+      panel.querySelector(".platform-reset-confirm").hidden = false;
+      btn.disabled = true;
+    }
+    else if (btn.dataset.action === "platform-reset-no") {
+      const panel = btn.closest('[role="tabpanel"]');
+      panel.querySelector(".platform-reset-confirm").hidden = true;
+      panel.querySelector('.platform-reset-btn').disabled = false;
+    }
+    else if (btn.dataset.action === "platform-reset-yes") {
+      resetPlatform(btn.dataset.platform);
+    }
     else if (btn.id === "settings-btn") {
       const panel = document.getElementById("settings-panel");
       panel.hidden = !panel.hidden;
@@ -608,6 +686,9 @@ async function main() {
   state.enabled = data.enabled !== false;
   state.siteEnabled = { ...state.siteEnabled, ...(data.siteEnabled || {}) };
   for (const p of PLATFORMS) state[p] = data[p] || {};
+  const migratedFacebook = migrateFacebookProfileRules(state.facebook);
+  state.facebook = migratedFacebook.state;
+  if (migratedFacebook.changed) persist({ facebook: state.facebook });
 
   const master = document.getElementById("master-toggle");
   master.dataset.scope = "master";

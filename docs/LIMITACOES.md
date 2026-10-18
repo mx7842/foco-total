@@ -35,3 +35,13 @@
    `fotosPerfilComentarios` são best-effort: não foi possível encontrar,
    respectivamente, uma live com arrecadação ativa e comentários totalmente
    carregados durante a inspeção para validar os seletores ao vivo.
+9. **Facebook — DOM de perfil e rotas**: os cards de Pessoas que talvez você
+   conheça, Dados pessoais, Amigos e Fotos são detectados por headings,
+   rótulos, links/imagens e limites dimensionais. O Facebook pode alterar esses
+   sinais ou carregar os cards tardiamente; a regra é deliberadamente
+   conservadora para não ocultar `main`, `[role="main"]` ou a coluna inteira.
+   O perfil aceita subrotas do usuário, mas não rotas globais como Amigos,
+   Grupos, Reels, Marketplace e Watch.
+10. **Atualização da extensão**: recarregar a extensão em
+    `chrome://extensions` não reinjeta automaticamente o content script nas
+    abas já abertas. Recarregue também a aba da rede social.

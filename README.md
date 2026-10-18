@@ -4,7 +4,7 @@ Extensão para Chrome e Brave (Manifest V3) que remove distrações das redes
 sociais de forma seletiva. Cada item pode ser ligado ou desligado no painel,
 sem conta, sem backend, sem telemetria e sem chamadas de rede.
 
-**Versão atual: 1.0.3** · [Baixar o pacote ZIP](foco-total-v1.0.3.zip)
+**Versão atual: 1.0.5** · [Baixar o pacote ZIP](foco-total-v1.0.5.zip)
 
 ## Veja a extensão
 
@@ -26,9 +26,12 @@ real:
   navegação, recomendações, vídeos, anúncios e elementos de interface.
 - **Privacidade:** todas as configurações ficam em `chrome.storage.local`.
 
+O popup oferece restauração por rede social no painel selecionado e restauração
+global ao lado da engrenagem. O reset individual preserva as demais redes.
+
 ## Instalação
 
-1. Baixe [foco-total-v1.0.3.zip](foco-total-v1.0.3.zip) e extraia a pasta.
+1. Baixe [foco-total-v1.0.5.zip](foco-total-v1.0.5.zip) e extraia a pasta.
 2. Abra `chrome://extensions` (ou `brave://extensions`).
 3. Ative o **Modo do desenvolvedor**.
 4. Clique em **Carregar sem compactação** e selecione a pasta extraída.
@@ -61,7 +64,7 @@ icons/             ícones originais
 docs/              documentação técnica
 ```
 
-## Atualização 2026-10-15 — Facebook e versão 1.0.2
+## Facebook na versão 1.0.5
 
 A implementação do Facebook foi validada em uma sessão autenticada do Chrome.
 Ela usa landmarks acessíveis e rotas observadas ao vivo, com guardas
@@ -69,10 +72,12 @@ dimensionais nas heurísticas dinâmicas. O motor reconhece tanto `main` quanto
 `[role="main"]`, porque a home atual do Facebook renderiza o conteúdo como um
 `div` com `role="main"`.
 
-## Atualização 2026-07-20 — otimização
+## Estado técnico da versão 1.0.5
 
-O runtime atual nao possui background service worker. O motor e idempotente,
-usa observer somente quando ha regra dinamica ativa/observavel e processa
-mutacoes por addedNodes. O popup renderiza apenas a aba inicial e cria os demais
-paineis sob demanda.
+O motor não possui background service worker, é idempotente, usa um único
+observer quando necessário e processa mutações por raízes adicionadas. CSS e
+regras dinâmicas do Facebook respeitam a rota, e um content script órfão após
+reload da extensão limpa suas marcas com segurança. O catálogo e os detalhes
+de compatibilidade ficam em [CONTEXTO.md](CONTEXTO.md) e
+[docs/MAPEAMENTO_ELEMENTOS.md](docs/MAPEAMENTO_ELEMENTOS.md).
 

@@ -20,6 +20,10 @@ O que a extensão **não** faz:
 - Não usa analytics/telemetria.
 - Não exige conta.
 
+O ciclo de vida por rota e a sincronização dos toggles usam somente APIs locais
+do navegador. Não foram adicionadas permissões para rede, scripting ou
+execução em outros domínios.
+
 ## Atualizacao 2026-07-20 - runtime otimizado
 
 A extensao nao usa mais service worker nem permissao scripting. A reinjecao
