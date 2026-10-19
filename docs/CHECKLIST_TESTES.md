@@ -1,4 +1,4 @@
-# Checklist de testes — Foco Total v1.0.6
+# Checklist de testes — Foco Total v1.0.7
 
 Status: ✅ passou · ⚠️ limitação/validação manual · ❌ falhou
 
@@ -6,14 +6,14 @@ Status: ✅ passou · ⚠️ limitação/validação manual · ❌ falhou
 
 - ✅ `node --check` em todos os scripts de `content/` e `popup/`.
 - ✅ `git diff --check` sem erros de whitespace.
-- ✅ Manifesto válido; versão `1.0.6`; todos os arquivos de content scripts,
+- ✅ Manifesto válido; versão `1.0.7`; todos os arquivos de content scripts,
   ícones e páginas referenciados existem.
 - ✅ IDs do popup são únicos e todas as chaves catalogadas possuem regra.
 - ✅ O catálogo não expõe a chave legada
   `perfilSugestoesAmigosFotos`.
 - ✅ O ZIP contém `manifest.json`, `popup/`, `content/` e `icons/`, e o
-  manifesto interno também informa `1.0.6`.
-- ✅ O branch mantém somente `foco-total-v1.0.6.zip`; pacotes anteriores ficam
+  manifesto interno também informa `1.0.7`.
+- ✅ O branch mantém somente `foco-total-v1.0.7.zip`; pacotes anteriores ficam
   no histórico/release.
 
 ## Popup, armazenamento e restauração
@@ -70,9 +70,21 @@ Status: ✅ passou · ⚠️ limitação/validação manual · ❌ falhou
 - ⚠️ Controles best-effort do YouTube para arrecadação e comentários de fotos
   continuam dependentes de conteúdo que nem sempre está disponível para teste.
 
+## Organização do YouTube — v1.0.7
+
+- ✅ O catálogo segue a jornada: cabeçalho, página inicial, menus, exploração,
+  Shorts, pesquisa, informações do vídeo, barra lateral, comentários, cards
+  durante o vídeo, cards finais e comportamento do player.
+- ✅ Todas as chaves do YouTube foram preservadas exatamente uma vez.
+- ✅ As regras em `content/youtube.js`, o motor, o armazenamento e as outras
+  plataformas não foram alterados.
+- ⚠️ A confirmação visual final da rolagem e dos toggles depende de abrir o
+  popup no Chrome; a página `chrome://extensions` não é controlável pelo
+  debugger.
+
 ## Release
 
-- ✅ Versão `1.0.6` alinhada em manifesto, popup, motor, README e docs.
-- ✅ Commit, tag `v1.0.6`, release e ZIP publicados no GitHub.
+- ✅ Versão `1.0.7` alinhada em manifesto, popup, motor, README e docs.
+- ✅ Commit, tag `v1.0.7`, release e ZIP publicados no GitHub.
 - ✅ Notas da release descrevem plataformas, resets, correções, privacidade,
   permissões, limitações, instalação e validações.

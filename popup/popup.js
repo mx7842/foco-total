@@ -68,67 +68,6 @@ const CATALOG = {
   ],
   youtube: [
     {
-      title: "Feed inicial",
-      items: [
-        { key: "paraVoce", label: "Ocultar feed inicial" },
-        { key: "redirecionarInscricoes", label: 'Redirecionar Início para "Inscrições"' },
-      ],
-    },
-    {
-      title: "Quando o vídeo termina",
-      items: [
-        { key: "telaFinalFeed", label: "Ocultar cards de recomendação no fim do vídeo" },
-      ],
-    },
-    {
-      title: "Shorts",
-      items: [
-        { key: "shorts", label: "Ocultar Shorts (em qualquer lugar)" },
-        { key: "shortsBusca", label: "Ocultar prateleiras de Shorts na pesquisa" },
-        { key: "abaShortsCanal", label: "Ocultar aba Shorts dos canais" },
-      ],
-    },
-    {
-      title: "Descoberta e feed",
-      items: [
-        { key: "mixes", label: "Ocultar mixes (playlists automáticas)" },
-        { key: "merchTicketsOfertas", label: "Ocultar produtos, ingressos e ofertas" },
-        { key: "resultadosBuscaExtras", label: "Ocultar sugestões extras na busca" },
-      ],
-    },
-    {
-      title: "Barra lateral do vídeo",
-      items: [
-        { key: "barraLateralVideo", label: "Ocultar barra lateral inteira" },
-        { key: "recomendados", label: "Ocultar recomendados" },
-        { key: "chatAoVivo", label: "Ocultar chat ao vivo" },
-        { key: "playlist", label: "Ocultar playlist" },
-        { key: "arrecadacao", label: "Ocultar arrecadação (fundraiser)" },
-      ],
-    },
-    {
-      title: "Durante o vídeo",
-      items: [
-        { key: "telaFinalCards", label: "Ocultar cards clicáveis durante o vídeo" },
-      ],
-    },
-    {
-      title: "Conteúdo e comentários",
-      items: [
-        { key: "comentarios", label: "Ocultar comentários" },
-        { key: "fotosPerfilComentarios", label: "Ocultar fotos de perfil nos comentários" },
-      ],
-    },
-    {
-      title: "Informações abaixo do vídeo",
-      items: [
-        { key: "infoVideo", label: "Ocultar tudo abaixo do vídeo" },
-        { key: "barraBotoesVideo", label: "Ocultar botões (curtir, compartilhar, salvar)" },
-        { key: "donoCanalVideo", label: "Ocultar nome e foto do canal" },
-        { key: "descricaoVideo", label: "Ocultar descrição do vídeo" },
-      ],
-    },
-    {
       title: "Cabeçalho (topo da página)",
       items: [
         { key: "cabecalho", label: "Ocultar cabeçalho inteiro" },
@@ -138,6 +77,13 @@ const CATALOG = {
         { key: "navCriar", label: "Ocultar botão Criar" },
         { key: "notificacoes", label: "Ocultar sino de notificações" },
         { key: "avatarConta", label: "Ocultar foto de perfil da conta" },
+      ],
+    },
+    {
+      title: "Página inicial",
+      items: [
+        { key: "paraVoce", label: "Ocultar feed inicial" },
+        { key: "redirecionarInscricoes", label: 'Redirecionar Início para "Inscrições"' },
       ],
     },
     {
@@ -163,12 +109,66 @@ const CATALOG = {
       ],
     },
     {
-      title: "Navegação e rodapé",
+      title: "Explorar e descoberta",
       items: [
         { key: "explorarTendencias", label: "Ocultar Explorar / Em alta" },
         { key: "maisDoYoutube", label: "Ocultar mais do YouTube" },
         { key: "navDenuncias", label: "Ocultar histórico de denúncias" },
         { key: "rodapeMenu", label: "Ocultar links institucionais (Sobre, Termos...)" },
+      ],
+    },
+    {
+      title: "Shorts",
+      items: [
+        { key: "shorts", label: "Ocultar Shorts (em qualquer lugar)" },
+        { key: "shortsBusca", label: "Ocultar prateleiras de Shorts na pesquisa" },
+        { key: "abaShortsCanal", label: "Ocultar aba Shorts dos canais" },
+      ],
+    },
+    {
+      title: "Pesquisa e recomendações",
+      items: [
+        { key: "mixes", label: "Ocultar mixes (playlists automáticas)" },
+        { key: "merchTicketsOfertas", label: "Ocultar produtos, ingressos e ofertas" },
+        { key: "resultadosBuscaExtras", label: "Ocultar sugestões extras na busca" },
+      ],
+    },
+    {
+      title: "Página do vídeo — informações",
+      items: [
+        { key: "infoVideo", label: "Ocultar tudo abaixo do vídeo" },
+        { key: "barraBotoesVideo", label: "Ocultar botões (curtir, compartilhar, salvar)" },
+        { key: "donoCanalVideo", label: "Ocultar nome e foto do canal" },
+        { key: "descricaoVideo", label: "Ocultar descrição do vídeo" },
+      ],
+    },
+    {
+      title: "Página do vídeo — barra lateral",
+      items: [
+        { key: "barraLateralVideo", label: "Ocultar barra lateral inteira" },
+        { key: "recomendados", label: "Ocultar recomendados" },
+        { key: "chatAoVivo", label: "Ocultar chat ao vivo" },
+        { key: "playlist", label: "Ocultar playlist" },
+        { key: "arrecadacao", label: "Ocultar arrecadação (fundraiser)" },
+      ],
+    },
+    {
+      title: "Comentários",
+      items: [
+        { key: "comentarios", label: "Ocultar comentários" },
+        { key: "fotosPerfilComentarios", label: "Ocultar fotos de perfil nos comentários" },
+      ],
+    },
+    {
+      title: "Durante o vídeo",
+      items: [
+        { key: "telaFinalCards", label: "Ocultar cards clicáveis durante o vídeo" },
+      ],
+    },
+    {
+      title: "Quando o vídeo termina",
+      items: [
+        { key: "telaFinalFeed", label: "Ocultar cards de recomendação no fim do vídeo" },
       ],
     },
     {

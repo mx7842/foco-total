@@ -1,6 +1,6 @@
 # Contexto do projeto — Foco Total
 
-Estado atual: **v1.0.6**. A extensão é uma extensão MV3 local para Chrome e
+Estado atual: **v1.0.7**. A extensão é uma extensão MV3 local para Chrome e
 Brave que oculta seletivamente elementos de distração em X, Instagram, TikTok,
 YouTube e Facebook.
 
@@ -15,7 +15,7 @@ YouTube e Facebook.
 - O popup é HTML/CSS/JS puro, sem framework, build step ou chamadas de rede.
 - Não há service worker, backend, conta, telemetria ou sincronização remota.
 - `icons/` contém os PNGs distribuíveis e o pacote atual é
-  `foco-total-v1.0.6.zip`.
+  `foco-total-v1.0.7.zip`.
 
 ## Plataformas e controles
 
@@ -106,6 +106,8 @@ Fotos ou rotas globais.
   documentação consolidada e release distribuível atual.
 - `v1.0.6`: remoção do controle agregado de ações da conta do Facebook,
   migração segura da chave antiga e publicação dos controles independentes.
+- `v1.0.7`: reorganização dos controles do YouTube no popup conforme a jornada
+  do usuário, sem alteração nas regras ou seletores da plataforma.
 
 ## QA e publicação
 

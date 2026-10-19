@@ -67,7 +67,7 @@ além de display:none, ex.: centralizar o feed do X quando o menu some).
   content/icons:
   ```powershell
   $src = (Get-Location).Path
-  Compress-Archive -Path "$src\manifest.json","$src\popup","$src\content","$src\icons" -DestinationPath "$src\foco-total-v1.0.6.zip" -Force
+  Compress-Archive -Path "$src\manifest.json","$src\popup","$src\content","$src\icons" -DestinationPath "$src\foco-total-v1.0.7.zip" -Force
   ```
 
 ## Armadilha conhecida: "F5 ritual"

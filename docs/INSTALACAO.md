@@ -1,6 +1,6 @@
 # Instalação local (Chrome e Brave)
 
-1. Baixe/clone a pasta do projeto (ou extraia `foco-total-v1.0.6.zip`).
+1. Baixe/clone a pasta do projeto (ou extraia `foco-total-v1.0.7.zip`).
 2. Abra `chrome://extensions` (Chrome) ou `brave://extensions` (Brave).
 3. Ative o **Modo do desenvolvedor** (canto superior direito).
 4. Clique em **Carregar sem compactação** e selecione a pasta raiz do
@@ -20,7 +20,7 @@
 Após alterar arquivos, clique no botão ↻ (Atualizar) do card da extensão em
 `chrome://extensions` e recarregue as abas das redes sociais abertas.
 
-O pacote oficial da versão atual é `foco-total-v1.0.6.zip`. Depois do reload,
+O pacote oficial da versão atual é `foco-total-v1.0.7.zip`. Depois do reload,
 abra o popup novamente para conferir a versão e as configurações persistidas.
 
 O botão de restauração dentro do painel atua somente na rede selecionada. A
