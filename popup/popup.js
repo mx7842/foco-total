@@ -250,7 +250,6 @@ const CATALOG = {
         { key: "navGrupos", label: "Ocultar ícone Grupos" },
         { key: "navMarketplace", label: "Ocultar ícone Marketplace" },
         { key: "navJogos", label: "Ocultar ícone Jogos" },
-        { key: "acoesConta", label: "Ocultar barra de ações da conta" },
         { key: "contaMenu", label: "Ocultar ícone de menu/aplicativos" },
         { key: "contaMessenger", label: "Ocultar ícone do Messenger" },
         { key: "contaNotificacoes", label: "Ocultar ícone de notificações" },
@@ -338,6 +337,7 @@ const PLATFORM_HOSTS = {
   "www.facebook.com": "facebook",
 };
 const LEGACY_FACEBOOK_PROFILE_KEY = "perfilSugestoesAmigosFotos";
+const LEGACY_FACEBOOK_ACCOUNT_BAR_KEY = "acoesConta";
 const FACEBOOK_PROFILE_RULE_KEYS = [
   "perfilSugestoes",
   "perfilDadosPessoais",
@@ -380,6 +380,17 @@ function migrateFacebookProfileRules(profile) {
   return { state: next, changed: true };
 }
 
+function migrateFacebookSettings(profile) {
+  const migratedProfile = migrateFacebookProfileRules(profile);
+  const next = migratedProfile.state;
+  const hadLegacyAccountBar = Object.prototype.hasOwnProperty.call(next, LEGACY_FACEBOOK_ACCOUNT_BAR_KEY);
+  if (hadLegacyAccountBar) delete next[LEGACY_FACEBOOK_ACCOUNT_BAR_KEY];
+  return {
+    state: next,
+    changed: migratedProfile.changed || hadLegacyAccountBar,
+  };
+}
+
 function normalizedState(candidate) {
   const source = candidate?.settings;
   if (!source || typeof source !== "object" || candidate.format !== "foco-total" || candidate.version !== BACKUP_VERSION) return null;
@@ -401,7 +412,7 @@ function normalizedState(candidate) {
   }
   const legacyFacebook = source.facebook?.[LEGACY_FACEBOOK_PROFILE_KEY];
   if (typeof legacyFacebook === "boolean") {
-    next.facebook = migrateFacebookProfileRules({
+    next.facebook = migrateFacebookSettings({
       ...next.facebook,
       [LEGACY_FACEBOOK_PROFILE_KEY]: legacyFacebook,
     }).state;
@@ -686,7 +697,7 @@ async function main() {
   state.enabled = data.enabled !== false;
   state.siteEnabled = { ...state.siteEnabled, ...(data.siteEnabled || {}) };
   for (const p of PLATFORMS) state[p] = data[p] || {};
-  const migratedFacebook = migrateFacebookProfileRules(state.facebook);
+  const migratedFacebook = migrateFacebookSettings(state.facebook);
   state.facebook = migratedFacebook.state;
   if (migratedFacebook.changed) persist({ facebook: state.facebook });
 

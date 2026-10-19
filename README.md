@@ -4,7 +4,7 @@ Extensão para Chrome e Brave (Manifest V3) que remove distrações das redes
 sociais de forma seletiva. Cada item pode ser ligado ou desligado no painel,
 sem conta, sem backend, sem telemetria e sem chamadas de rede.
 
-**Versão atual: 1.0.5** · [Baixar o pacote ZIP](foco-total-v1.0.5.zip)
+**Versão atual: 1.0.6** · [Baixar o pacote ZIP](foco-total-v1.0.6.zip)
 
 ## Veja a extensão
 
@@ -21,7 +21,7 @@ real:
   stories, sugestões de grupos, placeholders de carregamento, patrocinados,
   ações da conta, ícones da navegação superior, menu lateral individual ou
   inteiro, busca, rodapé, botão flutuante e controles adicionais dentro dos
-  perfis (sugestões, Amigos, Fotos, abas e ícones superiores direitos).
+  perfis (sugestões, Amigos, Fotos, abas e controles individuais do cabeçalho).
 - **X, Instagram, TikTok e YouTube:** controles específicos de feed,
   navegação, recomendações, vídeos, anúncios e elementos de interface.
 - **Privacidade:** todas as configurações ficam em `chrome.storage.local`.
@@ -31,7 +31,7 @@ global ao lado da engrenagem. O reset individual preserva as demais redes.
 
 ## Instalação
 
-1. Baixe [foco-total-v1.0.5.zip](foco-total-v1.0.5.zip) e extraia a pasta.
+1. Baixe [foco-total-v1.0.6.zip](foco-total-v1.0.6.zip) e extraia a pasta.
 2. Abra `chrome://extensions` (ou `brave://extensions`).
 3. Ative o **Modo do desenvolvedor**.
 4. Clique em **Carregar sem compactação** e selecione a pasta extraída.
@@ -64,7 +64,7 @@ icons/             ícones originais
 docs/              documentação técnica
 ```
 
-## Facebook na versão 1.0.5
+## Facebook na versão 1.0.6
 
 A implementação do Facebook foi validada em uma sessão autenticada do Chrome.
 Ela usa landmarks acessíveis e rotas observadas ao vivo, com guardas
@@ -72,7 +72,7 @@ dimensionais nas heurísticas dinâmicas. O motor reconhece tanto `main` quanto
 `[role="main"]`, porque a home atual do Facebook renderiza o conteúdo como um
 `div` com `role="main"`.
 
-## Estado técnico da versão 1.0.5
+## Estado técnico da versão 1.0.6
 
 O motor não possui background service worker, é idempotente, usa um único
 observer quando necessário e processa mutações por raízes adicionadas. CSS e

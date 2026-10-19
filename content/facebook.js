@@ -502,8 +502,6 @@ FocoTotal.init("facebook", {
     },
   },
 
-  acoesConta: { css: [FB_ACCOUNT] },
-
   perfilSugestoes: profileBlockRule("sugestoes"),
   perfilDadosPessoais: profileBlockRule("dadosPessoais"),
   perfilAmigos: profileBlockRule("amigos"),

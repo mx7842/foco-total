@@ -254,7 +254,6 @@ ofuscadas `x...`.
 | sugestoesGrupos | Título `Suas sugestões de grupos`/`Group suggestions`, combinado com botões `Participar do grupo`/`Join group` e `Remover`/`Remove` | Média — card de recomendação pode mudar de estrutura; largura/altura e conteúdo são obrigatórios |
 | carregamentoFeed | Elementos `aria-busy`, rótulo `Carregando...`/`Loading...` e contêiner visual delimitado dentro de `main` | Média — placeholders são temporários; a regra só considera cards do feed com limites de tamanho |
 | rodape | `div[role="navigation"][aria-label="Atalhos"] footer[role="contentinfo"]` + fallback `footer[role="contentinfo"][aria-label="Facebook"]` | Baixa — landmarks observados na home |
-| acoesConta | `div[role="navigation"][aria-label="Configurações e controles da conta"]` | Baixa — landmark acessível da imagem 3 |
 | navHome/navReels/navAmigos/navGrupos/navMarketplace/navJogos | `div[role="navigation"][aria-label="Facebook"] a[href="/"]`, `a[href^="/reel/"]`, `a[href^="/friends/"]`, `a[href^="/groups/"]`, `a[href^="/marketplace/"]` ou `a[href="/marketplace"]`, `a[href^="/gaming/"]` | Baixa — rotas observadas ao vivo; Marketplace pode aparecer com ou sem barra final |
 | patrocinados (lateral) | CSS dependente da rota: `#right_rail_container[role="complementary"]` somente em `/`; a lógica dinâmica de feed continua no escopo do feed | Média — id e role foram observados, mas a coluna não deve ser ocultada em perfil, Reels, Fotos ou rotas globais |
 | patrocinados (feed) | Dinâmico: link/folha com aria/texto `Patrocinado`/`Sponsored`, combinado com a ação do post ou `Abrir menu do conteúdo patrocinado`, subindo até o contêiner | Média — Facebook varia o contêiner e o idioma do marcador |
@@ -269,7 +268,7 @@ ofuscadas `x...`.
 | perfilFotos | Nas mesmas subrotas de perfil, heading `Fotos`/`Photos`, combinado com `Ver todas as fotos`, `See all photos`, `Fotos do perfil` ou `Profile photos`, além de imagens do card | Média — o Facebook pode mudar a quantidade de fotos; a regra exige conteúdo visual e limites dimensionais para não atingir a coluna inteira |
 | perfilSugestoesAmigosFotos (legado) | Chave interna temporária para instalações antigas; ao abrir o popup, seu estado é migrado para `perfilSugestoes`, `perfilDadosPessoais`, `perfilAmigos` e `perfilFotos` | Compatibilidade de uma versão — não aparece no catálogo nem em novos backups |
 | abas do perfil | Em perfil, controles `Tudo`, `Sobre`, `Amigos`, `Fotos`, `Reels` e `Mais` somente dentro de uma faixa que contenha pelo menos duas abas reconhecidas | Média — Facebook alterna entre links, botões e `role="tab"` |
-| ícones superiores direitos | Filhos circulares da navegação `Configurações e controles da conta`, identificados por rótulos de menu, Messenger, notificações e conta/avatar | Média — alguns rótulos são localizados ou omitidos; a conta usa fallback por avatar/último controle delimitado |
+| ícones superiores direitos | Controles independentes dentro da navegação `Configurações e controles da conta`: menu, Messenger, notificações e conta/avatar | Média — alguns rótulos são localizados ou omitidos; a conta usa fallback por avatar/último controle delimitado; não há mais ocultação direta do contêiner pai |
 
 As regras dinâmicas preservam guardas dimensionais para não marcar `main` ou
 a página inteira. O motor limpa marcas e estilo ao desativar, ao sair de uma

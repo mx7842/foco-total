@@ -1,4 +1,4 @@
-# Checklist de testes — Foco Total v1.0.5
+# Checklist de testes — Foco Total v1.0.6
 
 Status: ✅ passou · ⚠️ limitação/validação manual · ❌ falhou
 
@@ -6,14 +6,14 @@ Status: ✅ passou · ⚠️ limitação/validação manual · ❌ falhou
 
 - ✅ `node --check` em todos os scripts de `content/` e `popup/`.
 - ✅ `git diff --check` sem erros de whitespace.
-- ✅ Manifesto válido; versão `1.0.5`; todos os arquivos de content scripts,
+- ✅ Manifesto válido; versão `1.0.6`; todos os arquivos de content scripts,
   ícones e páginas referenciados existem.
 - ✅ IDs do popup são únicos e todas as chaves catalogadas possuem regra.
 - ✅ O catálogo não expõe a chave legada
   `perfilSugestoesAmigosFotos`.
 - ✅ O ZIP contém `manifest.json`, `popup/`, `content/` e `icons/`, e o
-  manifesto interno também informa `1.0.5`.
-- ✅ O branch mantém somente `foco-total-v1.0.5.zip`; pacotes anteriores ficam
+  manifesto interno também informa `1.0.6`.
+- ✅ O branch mantém somente `foco-total-v1.0.6.zip`; pacotes anteriores ficam
   no histórico/release.
 
 ## Popup, armazenamento e restauração
@@ -26,6 +26,8 @@ Status: ✅ passou · ⚠️ limitação/validação manual · ❌ falhou
   controles de perfil sem sobrescrever valores novos já existentes.
 - ✅ Novos backups não exportam a chave legada; backups antigos podem ser
   importados e convertidos.
+- ✅ A chave antiga `acoesConta` é removida ao carregar configurações e não é
+  convertida para os quatro controles individuais.
 - ⚠️ A confirmação visual final do popup depende de abrir a interface da
   extensão no Chrome; páginas `chrome://` não são controláveis pelo debugger.
 
@@ -52,6 +54,8 @@ Status: ✅ passou · ⚠️ limitação/validação manual · ❌ falhou
 - ✅ `feedInteiro` só aplica bloqueio de rolagem na home.
 - ✅ `patrocinados` só oculta a lateral na home; o detector de patrocinados do
   feed continua dinâmico.
+- ✅ Menu, Messenger, notificações e perfil/conta do cabeçalho são ocultados
+  individualmente; com todos desligados, nenhum deles desaparece.
 - ✅ Guardas semânticas e dimensionais impedem capturar `main`, `[role="main"]`
   ou o contêiner geral do perfil.
 - ⚠️ A estrutura do Facebook é dinâmica; o smoke visual deve ser repetido em
@@ -68,7 +72,7 @@ Status: ✅ passou · ⚠️ limitação/validação manual · ❌ falhou
 
 ## Release
 
-- ✅ Versão `1.0.5` alinhada em manifesto, popup, motor, README e docs.
-- ✅ Commit, tag `v1.0.5`, release e ZIP publicados no GitHub.
+- ✅ Versão `1.0.6` alinhada em manifesto, popup, motor, README e docs.
+- ✅ Commit, tag `v1.0.6`, release e ZIP publicados no GitHub.
 - ✅ Notas da release descrevem plataformas, resets, correções, privacidade,
   permissões, limitações, instalação e validações.

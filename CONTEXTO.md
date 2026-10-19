@@ -1,6 +1,6 @@
 # Contexto do projeto — Foco Total
 
-Estado atual: **v1.0.5**. A extensão é uma extensão MV3 local para Chrome e
+Estado atual: **v1.0.6**. A extensão é uma extensão MV3 local para Chrome e
 Brave que oculta seletivamente elementos de distração em X, Instagram, TikTok,
 YouTube e Facebook.
 
@@ -15,7 +15,7 @@ YouTube e Facebook.
 - O popup é HTML/CSS/JS puro, sem framework, build step ou chamadas de rede.
 - Não há service worker, backend, conta, telemetria ou sincronização remota.
 - `icons/` contém os PNGs distribuíveis e o pacote atual é
-  `foco-total-v1.0.5.zip`.
+  `foco-total-v1.0.6.zip`.
 
 ## Plataformas e controles
 
@@ -33,7 +33,9 @@ YouTube e Facebook.
 
 No perfil do Facebook, os blocos têm controles independentes para **Pessoas
 que talvez você conheça**, **Dados pessoais**, **Amigos** e **Fotos**. A aba de
-navegação **Amigos** continua separada. Os resets também são independentes:
+navegação **Amigos** continua separada. No cabeçalho, menu, Messenger,
+notificações e perfil/conta também são controles independentes; não existe mais
+um controle agregado que oculte a barra inteira. Os resets também são independentes:
 o botão do painel restaura somente a rede selecionada e o botão no cabeçalho,
 ao lado da engrenagem, restaura todas as redes.
 
@@ -45,6 +47,8 @@ ao lado da engrenagem, restaura todas as redes.
 - A chave antiga `perfilSugestoesAmigosFotos` continua sendo aceita apenas
   para migração; ao abrir/salvar o popup, seu valor é distribuído para os
   quatro controles novos e a chave antiga deixa de ser exportada.
+- A antiga chave agregada `acoesConta` é descartada na migração e não é
+  convertida para os controles individuais, evitando ocultações inesperadas.
 - Backups usam `BACKUP_VERSION = 1`, que é o formato do backup e não a versão
   da extensão.
 
@@ -100,6 +104,8 @@ Fotos ou rotas globais.
 - `v1.0.5`: auditoria do motor e das regras, limpeza de artefatos antigos,
   CSS dependente de rota no Facebook, tratamento de contexto invalidado,
   documentação consolidada e release distribuível atual.
+- `v1.0.6`: remoção do controle agregado de ações da conta do Facebook,
+  migração segura da chave antiga e publicação dos controles independentes.
 
 ## QA e publicação
 

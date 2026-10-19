@@ -11,7 +11,7 @@
   <text x="833" y="83" fill="#b9f735" font-family="Arial, sans-serif" font-size="25">↻</text>
   <rect x="876" y="50" width="48" height="48" rx="10" fill="#101510" stroke="#30442a"/>
   <text x="889" y="83" fill="#b9f735" font-family="Arial, sans-serif" font-size="24">⚙</text>
-  <text x="56" y="154" fill="#b9f735" font-family="Arial, sans-serif" font-size="16" font-weight="700">FACEBOOK · v1.0.5</text>
+  <text x="56" y="154" fill="#b9f735" font-family="Arial, sans-serif" font-size="16" font-weight="700">FACEBOOK · v1.0.6</text>
   <rect x="48" y="178" width="904" height="70" rx="12" fill="#0b0f0b" stroke="#30442a"/>
   <text x="72" y="221" fill="#f3f7ef" font-family="Arial, sans-serif" font-size="20">Ativado no Facebook</text>
   <circle cx="886" cy="213" r="18" fill="#a4f21a"/>
